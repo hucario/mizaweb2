@@ -1,26 +1,90 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef } from 'react'
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	NavLink,
+	useLocation
+} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import IsVisible from './components/IsVisible'
+
+import HomePage from './pages/home/'
+import TesterPage from './pages/tester/'
+
+import FileUploadPage from './pages/fileupload/index'
+import FileDetailsPage from './pages/filedetails/'
+
+import './appstyles.css'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
+function MizaApp() {
+	const location = useLocation();
+	const prevLoc = useRef(location.pathname);
+	useEffect(() => {
+		document.body.classList.remove(
+			'page' + (
+				prevLoc.current === '/' ? '/landing' : prevLoc.current
+			).replaceAll('/', '-').split('-').slice(0, 2).join('-')
+		)
+		document.body.classList.add(
+			'page' + (
+				location.pathname === '/' ? '/landing' : location.pathname
+			).replaceAll('/', '-').split('-').slice(0, 2).join('-')
+		)
+		prevLoc.current = location.pathname;
+	}, [location.pathname])
+	return (
+		<TransitionGroup>
+			<CSSTransition
+				key={location.key}
+				classNames="navigation"
+				timeout={600}
+			>
+				<section>
+					<base target="_blank" />
+					<nav>
+						<NavLink exact activeClassName="activeNav hideext" to="/">Home</NavLink>
+						<NavLink activeClassName="activeNav hideext" to="/atlas">Atlas</NavLink>
+						<NavLink activeClassName="activeNav hideext" to="/tester">Tester</NavLink>
+						<NavLink activeClassName="activeNav hideext" to="/files">Files</NavLink>
+						<a href="https://www.github.com/thomas-xin/miza">Code</a>
+						<a href="https://discord.gg/cbKQKAr">Support</a>
+					</nav>
+					<Switch location={location}>
+						<Route exact path="/" component={HomePage} />
+						<Route path="/files" component={FileUploadPage} />
+						<Route path="/file/:id" component={FileDetailsPage} />
+						<Route path="/atlas"><div>Atlas</div></Route>
+						<Route path="/tester" component={TesterPage} />
+						<Route path=""><div>404 page</div></Route>
+					</Switch>
+					<IsVisible
+						classNames={{
+							visible: 'fadeInUp',
+							invisible: ''
+						}}
+						sticky
+					>
+						<footer>
+							<div>
+								miza.web 2
+								<span className="sep" />
+								made with ♥ and 🍝
+								<span className="sep" />
+								by <a href="https://github.com/hucario">hucario</a>
+							</div>
+						</footer>
+					</IsVisible>
+				</section>
+			</CSSTransition>
+		</TransitionGroup>
+	)
 }
-
-export default App;
+export default function App() {
+	return (<React.StrictMode>
+		<Router>
+			<MizaApp />
+		</Router>
+	</React.StrictMode>)
+}
