@@ -1,6 +1,6 @@
 .inpWrapper {
 	position: relative;
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 	font-size: 1.5rem;
 	text-shadow: 0 0 4px #ffffff6e;
 	border: solid 1px white;
@@ -23,6 +23,19 @@
 	bottom: 0;
 	padding: .5rem 1rem;
 }
+.inpWrapper.disabled {
+	border-color: rgb(255 255 255 / 54%);
+	cursor: not-allowed;
+}
+
+.inp[disabled] {
+	background: #000000;
+	color: #a0a0a0;
+	text-shadow: none;
+	cursor: not-allowed;
+}
+
+
 .suggest {
 	text-shadow: inherit;
 	position: absolute;
@@ -39,13 +52,15 @@
 }
 
 .output {
-	border-radius: 1em;
-	background: var(--background-primary);
+	border-radius: 1rem;
+	background: #36393f;
 	width: max-content;
+	overflow: hidden;
+	position: relative;
 }
 
 .errorBoi {
-	background: var(--background-tertiary);
+	background: #202225;
 	padding: 1em 2em;
 	font-weight: bolder;
 	font-size: 1.1rem;
@@ -56,4 +71,87 @@
 
 .padder {
 	padding: 2em;
+	transition: opacity 350ms;
+}
+
+.inactiveLink {
+	cursor: default;
+	opacity: 0.5;
+	text-decoration: none;
+}
+.sep {
+	display: inline-block;
+	margin: 0 4px;
+	opacity: 0.5;
+	font-size: 0.9rem;
+	vertical-align: middle;
+}
+.permalinks {
+	margin-bottom: 1rem;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 250ms;
+}
+.permaInfo {
+	background: #202225;
+	padding: 1em 2em;
+	font-weight: lighter;
+	font-size: 1rem;
+	color: rgb(204 204 204);
+	width: 100%;
+	overflow: hidden;
+	border-radius: 1rem;
+}
+.permaShow {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.runYourself {
+    display: block;
+    background: #0368ff;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+	font-weight: bolder;
+	color: white;
+    margin-top: 0.7rem;
+    transition: background-color 250ms;
+}
+.runYourself:hover, .runYourself:focus {
+    background: #004ec1;
+}
+.loaderBar {
+	position: absolute;
+	height: 0.25rem;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 1rem;
+}
+.loaderBar:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	height: 100%;
+	width: 50%;
+	opacity: 0;
+	background: rgb(85, 76, 163);
+	transform: translateX(-100%);
+	border-radius: 100vw;
+	transition: opacity 150ms;
+}
+
+.loaderBar.loading:before {
+	opacity: 1;
+	animation: loadeyboye .5s infinite;
+}
+
+@keyframes loadeyboye {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(200%);
+	}
 }

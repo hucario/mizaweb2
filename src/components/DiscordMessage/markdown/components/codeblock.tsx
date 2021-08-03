@@ -15,7 +15,7 @@ export default function CodeBlock(props: {
 
 	useEffect(() => {
 		if (codeNode.current) {
-			hljs.highlightBlock(codeNode.current);
+			hljs.highlightElement(codeNode.current);
 		}
 	}, [props.language, props.children])
 
