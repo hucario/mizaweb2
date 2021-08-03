@@ -32,6 +32,7 @@ export default function FileDetails() {
 	const [progress, setProgress] = useState(0);
 	const [redirecteyboi, sR] = useState<null | string>(null);
 	const [loading, sL] = useState(false);
+	const [errored, sE] = useState(false);
 	const fiRef = useRef<HTMLInputElement | null>(null);
 
 	const upload = () => {
@@ -40,6 +41,7 @@ export default function FileDetails() {
 			return;
 		}
 		sL(true);
+		sE(false);
 		let xhr = new XMLHttpRequest();
 		xhr.upload.onprogress = function(e) {
 			setProgress((e.loaded / e.total) * 100);
@@ -49,6 +51,9 @@ export default function FileDetails() {
 				merge(file);
 			}
 		};
+		xhr.onerror = () => {
+			sE(true);
+		}
 		xhr.open('POST', 'http://i.mizabot.xyz/upload_chunk', true);
 		
 		xhr.setRequestHeader("X-File-Name", file.name);             // custom header with filename and full size
@@ -67,6 +72,9 @@ export default function FileDetails() {
 				sR(xhr.responseText.replace('/p/', '/file/'))
 			}
 		}
+		xhr.onerror = () => {
+			sE(true);
+		}
 	
 		fd.append("name", file.name);
 		fd.append("index", '0');
@@ -82,6 +90,7 @@ export default function FileDetails() {
 
 	let radius = 50;
 	let circumference = radius * 2 * Math.PI;
+
 	
 	if (loading) {
 		return (
@@ -89,7 +98,14 @@ export default function FileDetails() {
 				<div className={sty.hcenter}>
 					Uploading
 					<div className={sty.rel}>
-						<span className={sty.prog}>{Math.floor(progress)}%</span>
+						<span
+							className={sty.prog}
+							style={{
+								color: errored ? 'red' : 'white'
+							}}
+						>
+							{errored ? "Error" : Math.floor(progress) + '%'}
+						</span>
 						<svg
 							width="120"
 							height="120"
@@ -98,9 +114,9 @@ export default function FileDetails() {
 								className={sty.ring2}
 								style={{
 									strokeDasharray: `${circumference} ${circumference}`,
-									strokeDashoffset: circumference - (progress / 100) * circumference
+									strokeDashoffset: circumference - ((errored ? 100 : progress) / 100) * circumference
 								}}
-								stroke="white"
+								stroke={errored ? "red" : "white"}
 								stroke-width="4"
 								fill="transparent"
 								r="50"

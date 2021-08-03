@@ -37,6 +37,23 @@
 	font-weight: 700;
 	font-display: swap;
 }
+
+.block {
+	display: block;
+	color: var(--header-secondary);
+	overflow-x: auto;
+	padding: .5em;
+}
+.code {
+	border-radius: 4px;
+	color: inherit;
+	padding: .1em .25em;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	text-size-adjust: none
+}
+
 :root {
 	--header-primary: #fff;
 	--header-secondary: #b9bbbe;
@@ -728,21 +745,7 @@ code {
     font-weight: 600;
 }
 
-.embed code.block {
-	display: block;
-	color: var(--header-secondary);
-	overflow-x: auto;
-	padding: .5em;
-}
-.embed code {
-	border-radius: 4px;
-	color: inherit;
-	padding: .1em .25em;
-	-webkit-text-size-adjust: none;
-	-moz-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-	text-size-adjust: none
-}
+
 
 .hljs-comment, .hljs-quote {
 	color: var(--interactive-muted)

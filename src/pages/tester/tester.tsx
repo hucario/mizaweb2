@@ -33,7 +33,7 @@ export default function TesterPage(props: RouteChildrenProps) {
 		let val = a.split('=').slice(1).join('=');
 		sParams.set(key.toLowerCase(), val);
 	});
-	sParams.get('cmd') && sParams.set('cmd', decodeURIComponent(escape(sParams.get('cmd'))));
+	sParams.get('cmd') && sParams.set('cmd', decodeURIComponent(unescape(sParams.get('cmd'))));
 
 	const commandNames = useRef<string[]>([]);
 	const doCommand = (force?: string) => {
@@ -65,12 +65,12 @@ export default function TesterPage(props: RouteChildrenProps) {
 		if (fD) {
 			sCD(JSON.parse(decodeURIComponent(escape(atob(fD)))));
 			if (cmd) {
-				sCI('~' + decodeURIComponent(escape(cmd)));
+				sCI('~' + decodeURIComponent(unescape(cmd)));
 				// DON'T run the command again if there's data
 			}
 		} else if (cmd) {
-			sCI('~' + cmd);
-			doCommand('~' + cmd)
+			sCI('~' + decodeURIComponent(unescape(sParams.get('cmd'))));
+			doCommand('~' + decodeURIComponent(unescape(sParams.get('cmd'))))
 		}
 		sHDI(true);
 	}
@@ -139,11 +139,12 @@ export default function TesterPage(props: RouteChildrenProps) {
 				'hideext'
 			].join(' ')}>
 				<a
-					className={
-						(isPermaCmd) ?
+					className={[
+						((isPermaCmd) ?
 							styles.inactiveLink :
-							undefined
-					}
+							undefined),
+						styles.permCmd
+					].join(' ')}
 					href={`./tester?cmd=${
 						commandInput.substring(1)
 					}`}
@@ -156,15 +157,16 @@ export default function TesterPage(props: RouteChildrenProps) {
 					}}
 					target="_self"
 				>
-					command permalink
+					{commandInput}
 				</a>
 				<span className={styles.sep}>•</span>
 				<a
-					className={
-						(isPermaRes) ?
+					className={[
+						((isPermaRes) ?
 							styles.inactiveLink :
-							undefined
-					}
+							undefined),
+						styles.permRes
+					].join(' ')}
 					href={`./tester?cmd=${commandInput.substring(1)}&fdata=${btD}`}
 					onClick={(e) => {
 						e.preventDefault();
@@ -181,7 +183,7 @@ export default function TesterPage(props: RouteChildrenProps) {
 					}}
 					target="_self"
 				>
-					result permalink
+					{commandInput} [perma]
 				</a>
 			</div>
 			<div className={styles.output}>

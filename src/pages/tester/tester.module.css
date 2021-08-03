@@ -5,7 +5,7 @@
 	text-shadow: 0 0 4px #ffffff6e;
 	border: solid 1px white;
 	border-radius: 5px;
-	width: 20ch;
+	width: 40ch;
 	height: 3rem;
 	display: flex;
 	align-items: center;
@@ -41,6 +41,7 @@
 	position: absolute;
 	font-size: inherit;
 	margin-left: 1rem;
+	pointer-events: none;
 	opacity: 0.5;
 }
 
@@ -145,6 +146,18 @@
 .loaderBar.loading:before {
 	opacity: 1;
 	animation: loadeyboye .5s infinite;
+}
+.permCmd, .permRes {
+	font-size: 0;
+}
+.permCmd:after, .permRes:after {
+	font-size: 1rem;
+}
+.permCmd:after {
+	content: 'command permalink'
+}
+.permRes:after {
+	content: 'result permalink'
 }
 
 @keyframes loadeyboye {

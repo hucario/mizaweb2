@@ -4,7 +4,9 @@
 	--usserious: auto;
 	--usdolphin: none;
 	--iconwidth: 0;
-	--transdelay: 0.3s;
+	--transdelay: 0s;
+	--trdolphin: 0;
+	--trserious: 1;
 }
 
 .activePorpoise .porpoise {
@@ -14,29 +16,38 @@
 	--usdolphin: auto;
 	--iconwidth: 2ch;
 	--transdelay: 0s;
+	--trdolphin: 1;
+	--trserious: 0;
 }
 
 .serious, .nahlmao, .icon {
 	display: inline-block;
 	vertical-align: bottom;
 	overflow: hidden;
-	transition: width 250ms;
+	will-change: transform;
+	transition: transform 250ms;
 	transition-delay: var(--transdelay);
 }
 
 .icon {
+	transform-origin: right;
 	text-align: center;
 	font-size: 0.8em;
+	transform: scaleX(var(--trdolphin));
 	width: var(--iconwidth);
 	user-select: var(--usdolphin);
 }
 
 .nahlmao {
+	transform-origin: right;
+	transform: scaleX(var(--trdolphin));
 	width: var(--widthdolphin);
 	user-select: var(--usdolphin);
 }
 
 .serious {
+	transform-origin: left;
+	transform: scaleX(var(--trserious));
 	width: var(--widthserious);
 	user-select: var(--usserious);
 }
@@ -123,8 +134,7 @@
 	-webkit-user-drag: none;
 	user-select: none;
 	pointer-events: none;
-	transition: opacity .3s, filter .3s;
-	will-change: filter;
+	transition: opacity .3s;
 }
 .vc2 {
 	min-height: 100vh;
@@ -178,8 +188,7 @@
 	top: 0;
 /*	transform: rotate(-5deg);*/
 	opacity: 0.4;
-	transition: filter 350ms, opacity 350ms;
-	will-change: filter;
+	transition: opacity 350ms;
 }
 .bars2 {
 	right: -2vw;
@@ -208,7 +217,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-	transition: opacity .5s, filter .5s;
+	transition: opacity .5s;
 }
 :root {
 	scroll-snap-type: y proximity;
