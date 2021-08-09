@@ -73,51 +73,40 @@ section {
 	top: 0;
 	left: 0;
 	right: 0;
-	height: auto;
+	min-height: 100vh;
 	width: 100%;
-	transition: transform .3s, opacity .3s;
 }
 
-.navigation-exit > div, .navigation-exit > footer {
+.will-navigate {
+	transition: transform .3s, opacity .4s;
+}
+.navigation-exit {
 	opacity: 0;
 	animation: fadeOutUp .4s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-.navigation-enter > div, .navigation-enter > footer {
+.navigation-enter {
 	opacity: 1;
 	animation: fadeInUp .4s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-.navigation-exit nav {
-	opacity: 0;
-	z-index: 1;
-	animation: fadeOutUp .6s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-.navigation-enter nav {
-	z-index: 2;
-	animation: fadeInUp .6s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
 
 
 @keyframes fadeOutUp {
 	0% {
-		opacity: 1;
 		transform: translate3d(0,0,0)
 	}
 
 	100% {
-		opacity: 0;
 		transform: translate3d(0,-50px,0)
 	}
 }
 
 @keyframes fadeInUp {
 	0% {
-		opacity: 0;
 		transform: translate3d(0,50px,0)
 	}
 
 	100% {
-		opacity: 1;
 		transform: translate3d(0,0,0)
 	}
 }
@@ -135,8 +124,19 @@ footer {
 	max-height: 0;
 	width: 5em;
 }
-.fadeInUp div {
-	animation: fadeInUp .3s ease;
+@keyframes fadeInUp2 {
+	0% {
+		opacity: 0;
+		transform: translate3d(0,50px,0)
+	}
+
+	100% {
+		opacity: 1;
+		transform: translate3d(0,0,0)
+	}
+}
+.fadeInUp {
+	animation: fadeInUp2 .3s ease;
 }
 
 .activeNav {
@@ -150,4 +150,9 @@ footer {
 	height: 1em;
 	display: inline-block;
 	vertical-align: baseline;
+}
+
+#root > div {
+	width: 100%;
+	min-height: 100%;
 }

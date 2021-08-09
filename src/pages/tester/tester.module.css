@@ -149,9 +149,10 @@
 }
 .permCmd, .permRes {
 	font-size: 0;
+	user-select: none;
 }
 .permCmd:after, .permRes:after {
-	font-size: 1rem;
+	font-size: 1rem; 
 }
 .permCmd:after {
 	content: 'command permalink'

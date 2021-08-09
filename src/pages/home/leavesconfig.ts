@@ -264,13 +264,8 @@ const leavesConfig = {
 		"warp": false
 	},
 	"number": {
-		"density": {
-		"enable": false,
-		"area": 1000,
-		"factor": 100
-		},
 		"limit": 0,
-		"value": 60
+		"value": 30
 	},
 	"opacity": {
 		"random": {
@@ -480,8 +475,8 @@ const leavesConfig = {
 		"velocityRate": 1
 	}
 	},
-	"pauseOnBlur": false,
-	"pauseOnOutsideViewport": false,
+	"pauseOnBlur": true,
+	"pauseOnOutsideViewport": true,
 	"responsive": [],
 	"themes": []
 } as RecursivePartial<IOptions>

@@ -4,7 +4,7 @@ import { RouteChildrenProps} from 'react-router-dom'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { MessageData } from '../../components/DiscordMessage/DiscordMessage'
 import styles from './tester.module.css'
-import commandsByCategory from './commands'
+import commandsByCategory from '../../commands'
 
 let exampleCommandThingy = {
 	"content": "", 
@@ -25,6 +25,12 @@ export default function TesterPage(props: RouteChildrenProps) {
 	const [procError, sPE] = useState<null | string>(null);
 	const [storedResultsFor, sSRF] = useState<null | string>(null);
 	const [loading, sL] = useState(false);
+	useEffect(() => {
+		document.title = "Miza: Tester"
+		return () => {
+			document.title = "Miza";
+		}
+	})
 
 	let btD = btoa(unescape(encodeURIComponent(JSON.stringify(cData))));
 	let sParams = new Map();
@@ -39,7 +45,7 @@ export default function TesterPage(props: RouteChildrenProps) {
 	const doCommand = (force?: string) => {
 		let cI = force ?? commandInput;
 		sL(true);
-		fetch('http://i.mizabot.xyz/command/' + cI, {
+		fetch('http://i.mizabot.xyz/command/' + encodeURIComponent(cI), {
 			credentials: 'omit',
 			mode: window.location.hostname.includes('mizabot.xyz') ? 'same-origin' : 'cors'
 		}).then(async (e) => {

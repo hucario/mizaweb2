@@ -1,5 +1,5 @@
-import React, {  useRef, useState } from "react";
-import { Redirect } from 'react-router-dom'
+import React, {  useEffect, useRef, useState } from "react";
+import { Link, Redirect } from 'react-router-dom'
 import CodeBlock from "../../components/DiscordMessage/markdown/components/codeblock";
 
 import sty from './fileupload.module.css'
@@ -27,17 +27,24 @@ export default function FileDetails() {
 		data: File,
 		url: string
 	} | null>(null)
+	useEffect(() => {
+		document.title = "Miza: File Upload"
+		return () => {
+			document.title = "Miza";
+		}
+	})
 	const [previewTxt, setPVT] = useState<string | null>(null)
 	const [forceLang, sFL] = useState<string | null>(null);
 	const [progress, setProgress] = useState(0);
 	const [redirecteyboi, sR] = useState<null | string>(null);
 	const [loading, sL] = useState(false);
 	const [errored, sE] = useState(false);
+	const fileRef = useRef<File | undefined>(undefined);
 	const fiRef = useRef<HTMLInputElement | null>(null);
 
 	const upload = () => {
-		let file = fiRef.current?.files?.[0];
-		if (!file) {
+		let file = fileRef.current;
+		if (!file || typeof file === 'undefined') {
 			return;
 		}
 		sL(true);
@@ -46,7 +53,7 @@ export default function FileDetails() {
 		xhr.upload.onprogress = function(e) {
 			setProgress((e.loaded / e.total) * 100);
 		};
-		xhr.onreadystatechange = function(e) {
+		xhr.onreadystatechange = function() {
 			if(this.readyState === 4) {
 				merge(file);
 			}
@@ -131,10 +138,51 @@ export default function FileDetails() {
 	}
 	if (!details) {
 		return (
-			<div className={sty.vcenter}>
+			<div
+				className={sty.vcenter}
+				onDragOver={(e) => e.preventDefault()}
+				onDrop={(ev) => {
+					ev.preventDefault();
+					let file;
+					if (ev.dataTransfer.items) {
+						for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+							if (ev.dataTransfer.items[i].kind === 'file') {
+								let f = ev.dataTransfer.items[i].getAsFile();
+								if (f) {
+									file = f;
+									break;	
+								}
+							}
+						}
+					} else {
+						// Use DataTransfer interface to access the file(s)
+						file = ev.dataTransfer.files[0];
+					}
+					if (!file) {
+						return;
+					}
+					fileRef.current = file;
+					setDetails({
+						filename: file.name,
+						mimetype: file.type,
+						id: file.name,
+						size: file.size,
+						data: file,
+						url: URL.createObjectURL(file)
+					});
+					if (file.type.includes('text') || file.type.includes('script') || file.type === 'application/json') {
+						file.text().then((pvtt: string) => {
+							setPVT(pvtt)
+							if (pvtt.startsWith('<svg')) {
+								sFL('xml');
+							}
+						})
+					}
+				}}
+			>
 				<div className={sty.hcenter}>
 					<div className={sty.fileInputHolder}>
-						<h1 className={sty.up}>Upload file</h1>
+						<h1 className={sty.up}>Upload file or <Link to="/createredirect/">create redirect</Link></h1>
 						<label className={sty.file}>
 							<input
 								type="file"
@@ -150,6 +198,7 @@ export default function FileDetails() {
 									if (!file) {
 										return;
 									}
+									fileRef.current = file;
 									setDetails({
 										filename: file.name,
 										mimetype: file.type,

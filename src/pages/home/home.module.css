@@ -107,11 +107,11 @@
 	font-size: 1.4rem;
 	text-shadow: 0 2px 2px rgba(0,0,0,0.2);
 }
-.isOut * {
+.isOut > * {
 	opacity: 0.2;
 	transform: translateY(50);
 }
-.slideIn * {
+.slideIn > * {
 	opacity: 1;
 	transform: translateY(0);
 }
@@ -120,11 +120,9 @@
 }
 .nomoreblur .coolImgBro, .nomoreblur :global(canvas.tsparticles-canvas-el) {
 	opacity: 0.8;
-	filter: blur(0);
 }
 .yeahblur .coolImgBro, .yeahblur :global(canvas.tsparticles-canvas-el) {
 	opacity: 0.2;
-	filter: blur(2px);
 }
 .coolImgBro {
 	height: 110vh;
@@ -148,6 +146,7 @@
 	background-color: rgb(255 255 255 / 12%);
 	padding: 2rem;
 	border-radius: 10;
+	z-index: 9;
 }
 
 .rel {
@@ -206,19 +205,14 @@
 	transition: transform 750ms cubic-bezier(0.75, 0, 0.14, 0.99);
 	will-change: transform;
 	display: block;
-	margin-bottom: 2px;
 	transform: scaleX(var(--width));
 	transform-origin: left;
 }
 
-:global(body.page-landing canvas.tsparticles-canvas-el) {
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-	transition: opacity .5s;
+.bar:not(:last-child) {
+	margin-bottom: 2px;
 }
+
 :root {
 	scroll-snap-type: y proximity;
 }
@@ -334,19 +328,50 @@
 	right: unset;
 	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0));
 	-webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0));
+	z-index: 4;
 }
 
-:global(body.page-landing footer) {
+:global(section.page-landing footer) {
 	position: absolute;
 	bottom: 0;
 }
 
-:global(body.page-landing #sparkles),  :global(body.page-landing #leaves) {
-	position: absolute;
+:global(section.page-landing canvas.tsparticles-canvas-el) {
+	position: absolute !important;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
 	width: 100%;
 	height: 100%;
+	pointer-events: none !important;
+	transition: opacity .4s;
+}
+
+.nomoreblur :global(#cogs1 canvas), .nomoreblur :global(#cogs2 canvas) {
+	opacity: 0.4 !important;
+}
+
+.slide1 {
+	background-image: linear-gradient(#4a0d44, #212244);
+}
+.slide2 {
+	background-image: linear-gradient(#212244 90%, #4e0000 150%);
+}
+.slide3 {
+	background-image: linear-gradient(#212244 -1%, #4e0000 6%);
+}
+.slide4 {
+	background-image: linear-gradient(#4e0000 -8%, #463700  3%, #463700  99%, #212244  100%);
+}
+.slide5 {
+	background-color:  #212244;
+}
+
+.slide4  > .vcenter, .slide5 .vcenter {
+	min-height: 70vh;
+}
+.center {
+	font-size: 1.8rem;
+	font-weight: bolder;
 }

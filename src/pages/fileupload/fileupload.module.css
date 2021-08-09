@@ -112,6 +112,7 @@
 */
 
 .file {
+	text-align: left;
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
@@ -172,4 +173,9 @@
 	font-size: 1.2em;
 	text-align: center;
 	margin-bottom: 1em;
+}
+
+.fileInputHolder {
+	text-align: center;
+	align-items: center;
 }

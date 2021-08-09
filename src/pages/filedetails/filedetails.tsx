@@ -26,7 +26,9 @@ export default function FileDetails(props: {
 		size: number, /* in bytes */
 		mimetype: string,
 		raw: string,
-		dl: string
+		dl: string,
+		type: "FILE" | "LINK",
+		original_url?: string
 	} | null>(null)
 	const [previewTxt, setPVT] = useState<string | null>(null)
 	const [forceLang, sFL] = useState<string | null>(null);
@@ -35,8 +37,16 @@ export default function FileDetails(props: {
 		(async() => {
 			let res = await fetch('http://i.mizabot.xyz/fileinfo/' + props.match.params.id)
 			let data = await res.json();
+			data.type = 'FILE';
+
+			if (data.original_url) {
+				data.type = "LINK";
+			}
+
 			setDetails(data);
 			setLoading(false);
+
+
 			if (data.mimetype.includes('text') || data.mimetype.includes('script')) {
 				let pvt = await fetch(data.dl);
 				let pvtt = await pvt.text();
@@ -47,7 +57,20 @@ export default function FileDetails(props: {
 			}
 		})()
 	}, [props.match.params.id])
-	
+	useEffect(() => {
+		if (details) {
+			if (details.type === 'LINK') {
+				document.title = 'Miza: URL';
+			} else {
+				document.title = "Miza: " + details?.filename
+			}
+		} else {
+			document.title = "Miza: Files"
+		}
+		return () => {
+			document.title = "Miza";
+		}
+	}, [details])
 	if (loading) {
 		return (
 			<div className={sty.vcenter}>
@@ -73,6 +96,27 @@ export default function FileDetails(props: {
 						<p className={sty.desc}>
 							The file you're looking for either never existed (you entered the wrong id) or has expired (which is unlikely).
 						</p>
+					</div>
+				</div>
+			</div>
+		)
+	}
+	if (details.type === 'LINK') {
+		return (
+			<div className={sty.vcenter}>
+				<div className={sty.hcenter}>
+					<div className={sty.group}>
+						<h1 className={sty.filename}>
+						<a target="_self" href={details.raw}>{details.raw}</a>
+						</h1>
+						<h2 className={sty.mime} style={{
+							fontSize: '1.2rem'
+						}}>
+							<a target="_self" href={details.original_url}>{details.original_url}</a>
+						</h2>
+						<h4 className={sty.size}>
+							[[ redirect: {Number(details.id).toString(16)} ]]
+						</h4>
 					</div>
 				</div>
 			</div>

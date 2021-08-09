@@ -8,6 +8,8 @@ import particleOptions from './particlesconfig';
 import leavesconfig from './leavesconfig'
 
 import styles from './home.module.css'
+import cogsconfig from './cogsconfig1';
+import cogsconfig2 from './cogsconfig2';
 
 function MultiPorpoise() {
 	return (<span className={styles.porpoise}>
@@ -102,6 +104,9 @@ export default function HomePage() {
 			setCC("{{ couldn't fetch commits, v sorry }}")
 		})
 	}, [commitCount])
+	useEffect(() => {
+		document.title = "Miza"
+	})
 	return (
 	<div>
 	<IsVisible
@@ -111,7 +116,7 @@ export default function HomePage() {
 		}}
 		minShown={47}
 	>
-		<div className={styles.hcenter}>
+		<div className={[styles.hcenter, styles.slide1].join(' ')}>
 			<Orbitals />
 			<Orbi2 />
 				<div className={[styles.vcenter, styles.vcfull].join(' ')}>
@@ -146,7 +151,7 @@ export default function HomePage() {
 			}}
 			minShown={50}
 		>
-			<div className={[styles.hcenter, styles.rel].join(' ')}>
+			<div className={[styles.hcenter, styles.rel, styles.slide2].join(' ')}>
 				<img src="/veryprofessionalserver.png" alt="Miza's Very Professional Server" className={styles.coolImgBro} />
 				<img src="/monitor.png" alt="Miza's Very Professional Monitor" className={[styles.coolImgBro, styles.monitor].join(' ')} />
 				<Particles
@@ -181,9 +186,9 @@ export default function HomePage() {
 				invisible: stop
 			}}
 			stickyEvt
-			minShown={90}
+			minShown={70}
 		>
-			<div className={[styles.hcenter, styles.rel].join(' ')}>
+			<div className={[styles.hcenter, styles.rel, styles.slide3].join(' ')}>
 				<div className={[styles.vcenter, styles.vc3].join(' ')}>
 					<div
 						className={styles.bars} 
@@ -246,7 +251,15 @@ export default function HomePage() {
 			}}
 			minShown={50}
 		>
-			<div className={[styles.hcenter, styles.rel].join(' ')}>
+			<div className={[styles.hcenter, styles.rel, styles.slide4].join(' ')}>
+				<Particles
+					id="cogs1"
+					options={cogsconfig}
+				/>
+				<Particles
+					id="cogs2"
+					options={cogsconfig2}
+				/>
 				<div className={[styles.vcenter, styles.vc2].join(' ')}>
 					<IsVisible
 						classNames={{
@@ -259,14 +272,24 @@ export default function HomePage() {
 						<div className={styles.holder}>
 							<div className={styles.left}>
 								<img
-									src="https://cdn.discordapp.com/attachments/668071671063773204/870010847110500372/iu.png"
+									src="/mizawrench.png"
 									className={styles.mizaImg}
-									alt="handy man :)"
+									alt="handy miza :)"
 								/>
 							</div>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
 								<h2>Maintained</h2>
-								<p>Miza is constantly getting updated by <a href="https://github.com/thomas-xin">Thomas Xin.</a><br /><i>(There have been {commitCount ?? "{}"} commits in the past week alone!)</i><br />If there's a bug it'll usually be fixed within a day.</p>
+								<p>Miza is constantly getting updated by <a href="https://github.com/thomas-xin">Thomas Xin.</a><br />
+								{
+									commitCount && commitCount > 2 && 
+									<>
+										<i>
+											(There have been {commitCount} commits in the past week alone!)
+										</i>
+										<br />
+									</>
+								}
+								If there's a bug it'll usually be fixed within a day.</p>
 							</div>
 						</div>
 					</IsVisible>
@@ -280,7 +303,7 @@ export default function HomePage() {
 			}}
 			minShown={70}
 		>
-			<div className={[styles.hcenter, styles.rel].join(' ')}>
+			<div className={[styles.hcenter, styles.rel, styles.slide5].join(' ')}>
 				<img
 					src="/mizaleaf.png"
 					alt="Miza's doing Very Professional Things"
