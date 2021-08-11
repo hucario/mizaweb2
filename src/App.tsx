@@ -14,6 +14,7 @@ import FileUploadPage from './pages/fileupload/'
 import FileDetailsPage from './pages/filedetails/'
 import CRedirPage from './pages/createredirect/'
 import TimePage from './pages/time/'
+import MPInsightsPage from './pages/mpinsights/'
 
 import './appstyles.css'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -70,6 +71,7 @@ function MizaApp() {
 								<Route path="/atlas/:command?" component={AtlasPage} />
 								<Route path="/tester" component={TesterPage} />
 								<Route path="/time" component={TimePage} />
+								<Route path="/mpinsights" component={MPInsightsPage} />
 								<Route path=""><div>404 page</div></Route>
 							</Switch>
 							<footer>
