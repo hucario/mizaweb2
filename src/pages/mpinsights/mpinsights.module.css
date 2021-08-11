@@ -1,0 +1,16 @@
+.hcenter {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+}
+.vcenter {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	min-height: 100vh;
+}
+.group {
+	width: max-content;
+	text-align: center;
+}

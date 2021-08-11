@@ -1,0 +1,41 @@
+.hcenter {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+}
+.vcenter {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	min-height: 100vh;
+}
+.group {
+	width: max-content;
+	text-align: center;
+}
+
+.inp {
+	background-color: rgba(255, 255, 255, 0.2);
+	padding: .5em 1em;
+	border-radius: 5px;
+	width: 80ch;
+	max-width: 80vw; /* should never be in effect but who knows */
+}
+
+.cr {
+	margin-top: 1rem;
+	background-color: rebeccapurple;
+	padding: .5rem 1rem;
+	cursor: pointer;
+	transition: background-color 250ms, color 250ms;
+}
+.cr:not([disabled]):hover {
+	background-color: mediumpurple;
+}
+
+.cr[disabled] {
+	background-color: #671300;
+    color: #afafaf;
+	cursor: not-allowed;
+}

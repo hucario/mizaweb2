@@ -24,7 +24,7 @@
 	padding: .5rem 1rem;
 }
 .inpWrapper.disabled {
-	border-color: rgb(255 255 255 / 54%);
+	border-color: rgba(255, 255, 255, 0.54);
 	cursor: not-allowed;
 }
 

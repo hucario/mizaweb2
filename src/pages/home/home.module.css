@@ -78,10 +78,10 @@
 	-webkit-user-drag: none;
 	user-select: none;
 	aspect-ratio: 1/1;
-	border-radius: 10;
+	border-radius: 10px;
 	object-fit: cover;
 	object-position: 70% 50%;
-	box-shadow: 0 1px 20 0 #ac1ba2ad;
+	box-shadow: 0 1px 20px 0 #ac1ba2ad;
 }
 
 .left, .right {
@@ -143,9 +143,9 @@
 .coolTextBro {
 	font-size: 1.2rem;
 	backdrop-filter: blur(3px);
-	background-color: rgb(255 255 255 / 12%);
+	background-color: rgba(255, 255, 255, 0.12);
 	padding: 2rem;
-	border-radius: 10;
+	border-radius: 10px;
 	z-index: 9;
 }
 
@@ -157,7 +157,7 @@
 	left: 3vh;
 	height: 16vh;
 	top: 10%;
-	box-shadow: #00e7ff94 0 0 50;
+	box-shadow: #00e7ff94 0 0 50px;
 	animation: bobble 5s infinite;
 }
 
@@ -181,6 +181,7 @@
 	filter: blur(3px);
 }
 .bars {
+	--width: 0;
 	position: absolute;
 	left: -2vw;
 	width: 100vw;
@@ -190,6 +191,7 @@
 	transition: opacity 350ms;
 }
 .bars2 {
+	--width: 0;
 	right: -2vw;
 	left: unset;
 	bottom: 0;
@@ -310,7 +312,7 @@
 	padding: 0.4rem 1rem;
 	text-decoration: none;
 	color: white;
-	background-color: rgb(255 0 236 / 31%);
+	background-color: rgba(255, 0, 236, 0.31);
 	border-radius: 0.3rem;
 	will-change: background-color;
 	transition: background-color 250ms;
@@ -318,7 +320,7 @@
 }
 
 .ctas a:hover {
-	background-color:  rgb(255 0 236 / 45%);
+	background-color:  rgba(255, 0, 236, 0.45);
 }
 
 .mizaleaf {
@@ -327,7 +329,6 @@
 	height: 50vh;
 	right: unset;
 	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0));
-	-webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0));
 	z-index: 4;
 }
 

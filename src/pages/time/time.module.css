@@ -1,0 +1,39 @@
+.hcenter {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+}
+.vcenter {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	min-height: 100vh;
+}
+.group {
+	width: max-content;
+	text-align: center;
+}
+.greeting {
+	font-size: 2em;
+}
+.date {
+	font-size: 3em;
+}
+.time {
+	font-size: 4.5em;
+}
+.zone {
+	font-size: 1em;
+}
+
+.select {
+    color: black;
+    background: white;
+}
+.sel {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 1em;
+	padding: 1em;
+	margin-top: 1em;
+}
