@@ -81,17 +81,27 @@ export default function TesterPage(props: RouteChildrenProps) {
 		sHDI(true);
 	}
 	
-	useEffect(() => {
+	const doStuff = () => {
 		let tempC: string[] = [];
-		for (let cat in commandsByCategory) {
-			for (let command in commandsByCategory[cat]) {
+		if (!commandsByCategory.current) { 
+			return;
+		}
+		for (let cat in commandsByCategory.current) {
+			for (let command in commandsByCategory.current[cat]) {
 			tempC.push(
-					...commandsByCategory[cat][command].aliases.map(e => e.toLowerCase()),
+					...commandsByCategory.current[cat][command].aliases.map(e => e.toLowerCase()),
 					command.toLowerCase()
-			)
-				}
+				)
+			}
 		}
 		commandNames.current = tempC;
+	}
+	if (!commandsByCategory.effects.includes(doStuff)) {
+		commandsByCategory.setEffectCB(doStuff);
+	}
+
+	useEffect(() => {
+		doStuff();
 	}, [commandNames])
 
 	let suggestedCommand = commandNames.current.filter(e => e.startsWith(commandInput.substring(1))).sort()?.[0];

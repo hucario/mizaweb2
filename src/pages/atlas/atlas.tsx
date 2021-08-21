@@ -21,12 +21,6 @@ let catimages = new Map([
 let commandsByName: {
 	[key: string]: mizaCommand
 } = {};
-for (let key in commandsByCategory) {
-	commandsByName = {
-		...commandsByName,
-		...commandsByCategory[key]
-	}
-}
 
 interface namedMizaCommand extends mizaCommand {
 	title: string,
@@ -47,6 +41,11 @@ export default function AtlasPage(props: {
 	}>({})
 	const [currCmd, sCC] = useState<namedMizaCommand | null>(null)
 	const [doAnim, sDA] = useState(false);
+	const [forceRerender, sFRR] = useState<any>(null)
+	useEffect(() => {}, [forceRerender])
+	if (!commandsByCategory.effects.includes(sFRR)) {
+		commandsByCategory.setEffectCB(sFRR)
+	}
 	useEffect(() => {
 		document.title = "Mizatlas" + (
 			currCmd?.title ? ': ' + currCmd.title : ''
@@ -56,13 +55,35 @@ export default function AtlasPage(props: {
 		}
 	})
 	let cmd = props.match?.params.command;
-	useEffect(() => {
-		if (commandsByCategory[(cmd ?? '').toUpperCase()]) {
+	const updateCommandsByName = () => {
+				if (!commandsByCategory.current) {
+			return;
+		}
+		for (let key in commandsByCategory.current) {
+			commandsByName = {
+				...commandsByName,
+				...commandsByCategory.current[key]
+			}
+		}
+	}
+	if (!commandsByCategory.effects.includes(updateCommandsByName)) {
+		commandsByCategory.setEffectCB(updateCommandsByName);
+	}
+
+	const scrollIntoViewBoye = () => {
+		if (!commandsByCategory.current) {
+			return;
+		}
+		if (commandsByCategory.current[(cmd ?? '').toUpperCase()]) {
 			document.getElementById((cmd ?? '').toLowerCase())?.scrollIntoView({
 				behavior: 'smooth'
 			});
 		}
-	}, [cmd])
+	}
+	useEffect(scrollIntoViewBoye, [cmd])
+	if (!commandsByCategory.effects.includes(scrollIntoViewBoye)) {
+		commandsByCategory.setEffectCB(scrollIntoViewBoye);
+	}
 	useEffect(() => {
 		setTimeout(() => {
 			sDA(false);
@@ -100,7 +121,7 @@ export default function AtlasPage(props: {
 	return (
 		<div className={styles.page}>
 			<div className={styles.leftestnav}>
-				{Object.keys(commandsByCategory).map(key => {
+				{commandsByCategory.current && Object.keys(commandsByCategory.current).map(key => {
 					return (
 						<button
 							onClick={() => {
@@ -123,7 +144,7 @@ export default function AtlasPage(props: {
 				})}
 			</div>
 			<ol className={styles.leftnav}>
-				{Object.keys(commandsByCategory).map(cat => {
+				{commandsByCategory.current && Object.keys(commandsByCategory.current).map(cat => {
 					return (
 						<IsVisible
 							evts={{
@@ -144,7 +165,7 @@ export default function AtlasPage(props: {
 						>
 							<li className={styles.cmdCat} id={cat.toLowerCase()} >
 								<h5 className={styles.cmdCatH}>{cat.toLowerCase()}</h5>
-								{Object.keys(commandsByCategory[cat]).map((key) => {
+								{commandsByCategory.current && Object.keys(commandsByCategory.current[cat]).map((key) => {
 									return (
 										<div
 											className={styles.cmd}
@@ -153,10 +174,10 @@ export default function AtlasPage(props: {
 											<button
 												className={styles.cmdB}
 												onClick={() => {
-													if (!currCmd || currCmd.title !== key) {
+													if ((!currCmd || currCmd.title !== key) && commandsByCategory.current) {
 														sDA(true);
 														sCC({
-															...commandsByCategory[cat][key],
+															...commandsByCategory.current[cat][key],
 															title: key,
 															category: cat
 														});
