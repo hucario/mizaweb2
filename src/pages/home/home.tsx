@@ -329,9 +329,6 @@ export default function HomePage() {
 									<a href="https://discordapp.com/oauth2/authorize?permissions=8&client_id=668999031359537205&scope=bot%20applications.commands" >
 										Invite
 									</a>
-									<Link to="/docs/self-hosting">
-										Self host
-									</Link>
 									<a href="https://discord.com/invite/cbKQKAr">
 										Support server
 									</a>

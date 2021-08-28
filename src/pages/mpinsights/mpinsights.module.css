@@ -14,3 +14,14 @@
 	width: max-content;
 	text-align: center;
 }
+.chartholder {
+	height: max-content;
+	width: 50vw;
+}
+.chart {
+	width: 50vw;
+	height: 25vw;
+	background: white;
+	border-radius: 5px;
+	margin: 1vw;
+}
