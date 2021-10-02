@@ -2,7 +2,7 @@ import React from "react";
 
 import Embed, { EmbedData } from './embed/embed'
 import MessageMeta from './meta'
-import md from './markdown/md'
+import { parseMessageContent as md } from './markdown/parsers/parseMessageContent'
 import messageStyles from './messagestyles.module.css'
 
 export type MessageData = {
@@ -73,40 +73,40 @@ export default function Message(props: {
 	}
 
 	return (
-		<div
-			className={[
-				'hideext',
-				messageStyles.message,
-				messageStyles.cozyMessage,
-				messageStyles.groupStart,
-				messageStyles.wrapper,
-				messageStyles.cozy,
-				messageStyles.zalgo
-			].join(' ')} 
-			role="listitem" 
-			tabIndex={-1}
-			style={props.style}
-		>
-			<MessageMeta
-				avatar="/logo256.png"
-				name="Miza"
-				color="#cfb2dc"
-				bot={true}
-				time={dateStr}
-			/>
-			<div 
-				className={messageStyles.contents} 
-				role="document"
+			<div
+				className={[
+					'hideext',
+					messageStyles.message,
+					messageStyles.cozyMessage,
+					messageStyles.groupStart,
+					messageStyles.wrapper,
+					messageStyles.cozy,
+					messageStyles.zalgo
+				].join(' ')} 
+				role="listitem" 
+				tabIndex={-1}
+				style={props.style}
 			>
-				<div
-					className={[messageStyles.markup, messageStyles.messageContent].join(' ')}
+				<MessageMeta
+					avatar="/logo256.png"
+					name="Miza"
+					color="#cfb2dc"
+					bot={true}
+					time={dateStr}
+				/>
+				<div 
+					className={messageStyles.contents} 
+					role="document"
 				>
-					{md(data.content)}
+					<div
+						className={[messageStyles.markup, messageStyles.messageContent].join(' ')}
+					>
+						{md(data.content)}
+					</div>
+				</div>
+				<div className={messageStyles.container} >
+					{embedElems}
 				</div>
 			</div>
-			<div className={messageStyles.container} >
-				{embedElems}
-			</div>
-		</div>
 	)
 }

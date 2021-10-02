@@ -37,7 +37,7 @@ const commands: commandsRefKinda = {
 }
 
 fetch('http://i.mizabot.xyz/static/HELP.json').then(e => e.json()).then((e: helpJSONStruc) => {
-	commands.current = e;
+	commands.set(e);
 })
 
 export default commands;

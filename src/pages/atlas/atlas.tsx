@@ -7,24 +7,25 @@ import React, { useEffect, useState } from 'react'
 import { MessageData } from '../../components/DiscordMessage/DiscordMessage'
 
 let catimages = new Map([
-	['MAIN', 'https://discord.com/assets/516bf0fae97628e22a3a3ec810a8c4ba.svg'],
-	['STRING', 'https://discord.com/assets/8db9972dd015f679c16544ac3e29e6b1.svg'],
-	['ADMIN', 'https://discord.com/assets/0d9e341a5ff1e9d55e691cc7d86f05bd.svg'],
-	['VOICE', 'https://discord.com/assets/0e7fc4b6265bd336e8fe4dca75417ee7.svg'],
-	['IMAGE', 'https://discord.com/assets/59bdcc534c0d1adc1fb7575a1a4785a6.svg'],
-	['FUN', 'https://discord.com/assets/559c3311dcdb3f23b7fb745559207db9.svg'],
-	['OWNER', 'https://discord.com/assets/19fc9fc6001951c7370b1fd74e1570f1.svg'],
-	['NSFW', 'https://discord.com/assets/ece853d6c1c1cd81f762db6c26fade40.svg'],
-	['MISC', 'https://discord.com/assets/2e3fbb2338145553a3d26c677b4f83a3.svg']
+	['MAIN', '/main.svg'],
+	['STRING', '/string.svg'],
+	['ADMIN', '/admin.svg'],
+	['VOICE', '/voice.svg'],
+	['IMAGE', '/image.svg'],
+	['FUN', '/upside_down.svg'],
+	['OWNER', '/owner.svg'],
+	['NSFW', '/nsfw.svg'],
+	['MISC', '/misc.svg']
 ])
 
 let commandsByName: {
-	[key: string]: mizaCommand
+	[key: string]: namedMizaCommand
 } = {};
 
 interface namedMizaCommand extends mizaCommand {
 	title: string,
-	category: string
+	category: string,
+	name: string
 }
 
 export default function AtlasPage(props: {
@@ -56,13 +57,31 @@ export default function AtlasPage(props: {
 	})
 	let cmd = props.match?.params.command;
 	const updateCommandsByName = () => {
-				if (!commandsByCategory.current) {
+		if (!commandsByCategory.current) {
 			return;
 		}
 		for (let key in commandsByCategory.current) {
-			commandsByName = {
-				...commandsByName,
-				...commandsByCategory.current[key]
+			for (let cmd in commandsByCategory.current[key]) {
+				commandsByName[cmd.toLowerCase()] = {
+					...commandsByCategory.current[key][cmd],
+					category: key,
+					name: cmd
+				} as namedMizaCommand;
+			}
+
+		}
+		if (props.match?.params?.command && !currCmd) {
+			if (commandsByName[props.match?.params?.command?.toLowerCase()]) {
+				sCC({
+					...commandsByName[props.match.params.command.toLowerCase()],
+					title: commandsByName[props.match.params.command.toLowerCase()].name,
+					category: commandsByName[props.match.params.command.toLowerCase()].category,
+				})
+				sCI('~' + commandsByName[props.match.params.command.toLowerCase()].name.toLowerCase())
+			} else if (catimages.get(props.match.params.command.toUpperCase())) {
+				document.getElementById(props.match.params.command.toLowerCase())?.scrollIntoView({
+					behavior: 'smooth'
+				});
 			}
 		}
 	}
@@ -119,16 +138,20 @@ export default function AtlasPage(props: {
 	}
 
 	return (
-		<div className={styles.page}>
+		<div className={`${styles.page} hideext`}>
 			<div className={styles.leftestnav}>
 				{commandsByCategory.current && Object.keys(commandsByCategory.current).map(key => {
 					return (
-						<button
-							onClick={() => {
+						<a
+							onClick={(e) => {
+								e.preventDefault();
+								window.history.replaceState(null, `Miza: ${key}`, `/atlas/${key.toLowerCase()}`)
 								document.getElementById(key.toLowerCase())?.scrollIntoView({
 									behavior: 'smooth'
 								});
 							}}
+							href={`/atlas/${key.toLowerCase()}`}
+							target="_self"
 						>
 							<img
 								className={[
@@ -139,7 +162,7 @@ export default function AtlasPage(props: {
 								alt={key.toLowerCase()}
 								title={key.toLowerCase()}
 							/>
-						</button>
+						</a>
 					)
 				})}
 			</div>
@@ -171,15 +194,20 @@ export default function AtlasPage(props: {
 											className={styles.cmd}
 											id={key.toLowerCase()}
 										>
-											<button
+											<a
 												className={styles.cmdB}
-												onClick={() => {
+												href={`/atlas/${key.toLowerCase()}`}
+												target="_self"
+												onClick={(e) => {
+													e.preventDefault();
+													window.history.replaceState(null, `Miza: ${key}`, `/atlas/${key.toLowerCase()}`)
 													if ((!currCmd || currCmd.title !== key) && commandsByCategory.current) {
 														sDA(true);
 														sCC({
 															...commandsByCategory.current[cat][key],
 															title: key,
-															category: cat
+															category: cat,
+															name: key
 														});
 														sCI(`~${key.toLowerCase()} `)
 														sCD(null);
@@ -189,7 +217,7 @@ export default function AtlasPage(props: {
 												}}
 											>
 												{key}
-											</button>
+											</a>
 										</div>
 									)
 								})}
@@ -205,16 +233,20 @@ export default function AtlasPage(props: {
 				{currCmd && 
 					<>
 						<h6 className={styles.tCmdCat}>
-							<button
+							<a
 								className={styles.tCmdCatB}
-								onClick={() => {
+								href={`/atlas/${currCmd.category.toLowerCase()}`}
+								onClick={(e) => {
+									e.preventDefault();
 									document.getElementById(currCmd.category.toLowerCase())?.scrollIntoView({
 										behavior: 'smooth'
 									});
+									window.history.replaceState(null, `Miza: ${currCmd.category.toLowerCase()}`, `/atlas/${currCmd.category.toLowerCase()}`)
 								}}
+								target="_self"
 							>
 								{currCmd.category}
-							</button>
+							</a>
 						</h6>
 						<h1 className={styles.tCmdHeader}>{currCmd.title}</h1>
 						<h2 className={styles.aliases}>[[ aka {currCmd.aliases.join(', ')} ]]</h2>
@@ -277,6 +309,11 @@ export default function AtlasPage(props: {
 									<DiscordMessage
 										data={cData}
 									/>
+								}
+								{!cData && 
+									<button className={styles.usage} onClick={() => { doCommand(); }}>
+										Run
+									</button>
 								}
 							</div>
 						</div>

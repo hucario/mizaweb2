@@ -2,8 +2,10 @@ import React from 'react'
 import EmbedHeader from './header'
 import EmbedGallery from './gallery'
 import EmbedFooter from './footer'
-import md from '../markdown/md'
+import { parseEmbedContent } from '../markdown/parsers/parseEmbedContent'
+import { parseEmbedHeader } from '../markdown/parsers/parseEmbedHeader'
 import embedStyles from '../messagestyles.module.css'
+import { RichEmbedContainer } from '../markdown/styles/RichEmbedContainer'
 
 function toHexColor(num: number) {
     let x = Number(num).toString(16);
@@ -68,14 +70,14 @@ export default function Embed(props: {
 						key={fkeys++}
 						className="embedFieldValue"
 					>
-						{md(df[i].value)}
+						{parseEmbedContent(df[i].value)}
 					</div>
 				</div>
 			)
 		}
 	}
 	return (
-		<div 
+		<RichEmbedContainer
 			className={[
 				embedStyles.embWrapper,
 				embedStyles.full,
@@ -124,7 +126,7 @@ export default function Embed(props: {
 								target="_blank"
 								role="button"
 							>
-								{props.data.title}
+								{parseEmbedHeader(props.data.title)}
 							</a>
 						}
 						{!props.data.url && props.data.title}
@@ -137,7 +139,7 @@ export default function Embed(props: {
 							embedStyles.margin
 						].join(' ')}
 					>
-						{md(props.data.description)}
+						{parseEmbedContent(props.data.description)}
 					</div>
 				}
 				<div 
@@ -189,6 +191,6 @@ export default function Embed(props: {
 					time={props.data.timestamp}
 				/>
 			</div>
-		</div>
+		</RichEmbedContainer>
 	)
 }

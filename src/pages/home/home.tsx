@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
 import IsVisible from '../../components/IsVisible'
 import useTicker from '../../useTicker'
 import Particles from "react-tsparticles";
@@ -54,7 +53,7 @@ function Orbitals() {
 						animationDelay: -e*4 + 's'
 					}}
 					alt='Orbital'
-					src='https://discord.com/assets/559c3311dcdb3f23b7fb745559207db9.svg'
+					src='/upside_down.svg'
 				/>
 			)
 		})}
@@ -71,7 +70,7 @@ function Orbi2() {
 						animationDelay: -e*4 + 's'
 					}}
 					alt='Orbital'
-					src='https://discord.com/assets/141d49436743034a59dec6bd5618675d.svg'
+					src='/star.svg'
 				/>
 			)
 		})}
@@ -90,22 +89,8 @@ export default function HomePage() {
 		started: false
 	})
 	let width = (curr > 0 ? 1 : 0);
-	let [commitCount, setCC] = useState<undefined | string | number>();
 	useEffect(() => {
-		if (commitCount) {
-			return;
-		}
-		fetch(
-			'https://api.github.com/repos/thomas-xin/miza/commits?since='
-			+ (new Date(Date.now()-(1000 * 60 * 60 * 24 * 7))).toISOString().substring(0, 19) + 'Z'
-		).then(b => b.json()).then(commits => {
-			setCC(commits.length)
-		}).catch(() => {
-			setCC("{{ couldn't fetch commits, v sorry }}")
-		})
-	}, [commitCount])
-	useEffect(() => {
-		document.title = "Miza"
+		document.title = "Miza: a multipurpose Discord bot"
 	})
 	return (
 	<div>
@@ -168,8 +153,12 @@ export default function HomePage() {
 					>
 						<div className={styles.holder}>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
-								<h2>Built for speed</h2>
-								<p>Miza is written in Python and aggressively optimized. All commands are quick and responsive. Except for downloading youtube playlists with 100+ items. That takes a while.</p>
+								<h2 className={styles.coolHeadingBro}>Built for speed</h2>
+								<p>Built in Python, Miza is a multipurpose Discord bot, fashioned after the character 'Misery' from the platformer game Cave Story.
+
+She quickly branched out into all the areas you'd desire in a server, with careful attention to efficiency, performance, quality, and reliability. All commands are quick and responsive... except for downloading hundreds of items at a time. That may take you a while!
+
+Above all else, Miza aims to provide users with a smooth, reliable and unique Discord experience, but the general premise for Miza is: 'If other bots can do it, Miza should be able to do it too.'</p>
 							</div>
 						</div>
 					</IsVisible>
@@ -236,8 +225,11 @@ export default function HomePage() {
 					>
 						<div className={styles.holder}>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
-								<h2>Versatile</h2>
-								<p>With <Link to="/atlas">over 350 commands</Link>, Miza will probably cover all your needs, which means <i>you</i> don't need to get several bots. </p>
+								<h2 className={styles.coolHeadingBro}>Versatile</h2>
+								<p>
+									All of Miza's commands are easily accessible and manageable, with permission levels assignable on a user/role basis, as well as command category enabling/disabling at will. <br />
+									Sporting features from every category, Miza is capable of suiting just about anyone's needs, from standard text commands, game features, moderating features, image features, roleplay features, and more.<br />Remember, you can disable anything you please, so you can have Miza suit any one of them if that's what you want!
+								</p>
 							</div>
 						</div>
 					</IsVisible>
@@ -278,18 +270,10 @@ export default function HomePage() {
 								/>
 							</div>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
-								<h2>Maintained</h2>
-								<p>Miza is constantly getting updated by <a href="https://github.com/thomas-xin">Thomas Xin.</a><br />
-								{
-									commitCount && commitCount > 2 && 
-									<>
-										<i>
-											(There have been {commitCount} commits in the past week alone!)
-										</i>
-										<br />
-									</>
-								}
-								If there's a bug it'll usually be fixed within a day.</p>
+								<h2 className={styles.coolHeadingBro}>Maintained</h2>
+								<p>Miza is constantly getting updated by <a href="https://github.com/thomas-xin">Thomas Xin,</a> with a crew at hand for any questions, feature requests or bug reports you may have.<br />
+								Find a bug? Let us know and it'll usually be fixed within a day or few!
+								</p>
 							</div>
 						</div>
 					</IsVisible>

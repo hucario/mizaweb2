@@ -1,6 +1,6 @@
 import React, {  useEffect, useRef, useState } from "react";
 import { Link, Redirect } from 'react-router-dom'
-import CodeBlock from "../../components/DiscordMessage/markdown/components/codeblock";
+import { CodeBlock } from "../../components/DiscordMessage/markdown/code/CodeBlock";
 
 import sty from './fileupload.module.css'
 
@@ -254,18 +254,13 @@ export default function FileDetails() {
 				}
 				{previewTxt &&
 					<CodeBlock
-						className={[
-							sty.previewTxt,
-							'hljs-' + forceLang ?? (
-								details.filename.split('.')[details.filename.split('.').length-1]
-							)
-						].join(' ')}
-						preCN={sty.preCN}
-					>
-						{previewTxt.substring(0, 10000) + (
-							previewTxt.length > 10000 ? '...' : ''
+						language={forceLang ?? (
+							details.filename.split('.')[details.filename.split('.').length-1]
 						)}
-					</CodeBlock>
+						content={previewTxt.substring(0, 10000) + (
+							previewTxt.length > 10000 ? '...' : ''
+						)} 
+					/>
 				}
 				<div className={sty.group}>
 					<button

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CodeBlock from "../../components/DiscordMessage/markdown/components/codeblock";
+import { CodeBlock } from "../../components/DiscordMessage/markdown/code/CodeBlock";
 
 import sty from './filedetails.module.css'
 
@@ -158,18 +158,13 @@ export default function FileDetails(props: {
 				}
 				{previewTxt &&
 					<CodeBlock
-						className={[
-							sty.previewTxt,
-							'hljs-' + forceLang ?? (
-								details.filename.split('.')[details.filename.split('.').length-1]
-							)
-						].join(' ')}
-						preCN={sty.preCN}
-					>
-						{previewTxt.substring(0, 10000) + (
-							previewTxt.length > 10000 ? '...' : ''
+						language={forceLang ?? (
+							details.filename.split('.')[details.filename.split('.').length-1]
 						)}
-					</CodeBlock>
+						content={previewTxt.substring(0, 10000) + (
+							previewTxt.length > 10000 ? '...' : ''
+						)} 
+					/>
 				}
 				<ul className={sty.group}>
 					<li>

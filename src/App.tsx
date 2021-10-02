@@ -4,9 +4,12 @@ import {
 	Switch,
 	Route,
 	NavLink,
-	useLocation
+	useLocation,
+	Redirect
 } from "react-router-dom";
 
+import { ThemeProvider } from "styled-components"
+import { DEFAULT_THEME } from './components/DiscordMessage/markdown/styles/defaultTheme'
 import HomePage from './pages/home/'
 import AtlasPage from './pages/atlas/'
 import TesterPage from './pages/tester/'
@@ -68,6 +71,7 @@ function MizaApp() {
 								<Route path="/files" component={FileUploadPage} />
 								<Route path="/file/:id" component={FileDetailsPage} />
 								<Route path="/createredirect" component={CRedirPage} />
+								<Redirect from="/mizatlas" to="/atlas" /> {/* old url */}
 								<Route path="/atlas/:command?" component={AtlasPage} />
 								<Route path="/tester" component={TesterPage} />
 								<Route path="/time" component={TimePage} />
@@ -93,7 +97,9 @@ function MizaApp() {
 export default function App() {
 	return (<React.StrictMode>
 		<Router>
-			<MizaApp />
+			<ThemeProvider theme={DEFAULT_THEME}>
+				<MizaApp />
+			</ThemeProvider>
 		</Router>
 	</React.StrictMode>)
 }
