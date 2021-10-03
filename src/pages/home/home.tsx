@@ -154,10 +154,8 @@ export default function HomePage() {
 						<div className={styles.holder}>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
 								<h2 className={styles.coolHeadingBro}>Built for speed</h2>
-								<p>Built in Python, Miza is a multipurpose Discord bot, fashioned after the character 'Misery' from the platformer game Cave Story.
-
-She quickly branched out into all the areas you'd desire in a server, with careful attention to efficiency, performance, quality, and reliability. All commands are quick and responsive... except for downloading hundreds of items at a time. That may take you a while!
-
+								<p>Built in Python, Miza is a multipurpose Discord bot, fashioned after the character 'Misery' from the platformer game Cave Story.<br /><br />
+She quickly branched out into all the areas you'd desire in a server, with careful attention to efficiency, performance, quality, and reliability. All commands are quick and responsive... except for downloading hundreds of items at a time. That may take you a while!<br /><br />
 Above all else, Miza aims to provide users with a smooth, reliable and unique Discord experience, but the general premise for Miza is: 'If other bots can do it, Miza should be able to do it too.'</p>
 							</div>
 						</div>
@@ -227,8 +225,8 @@ Above all else, Miza aims to provide users with a smooth, reliable and unique Di
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
 								<h2 className={styles.coolHeadingBro}>Versatile</h2>
 								<p>
-									All of Miza's commands are easily accessible and manageable, with permission levels assignable on a user/role basis, as well as command category enabling/disabling at will. <br />
-									Sporting features from every category, Miza is capable of suiting just about anyone's needs, from standard text commands, game features, moderating features, image features, roleplay features, and more.<br />Remember, you can disable anything you please, so you can have Miza suit any one of them if that's what you want!
+									All of Miza's commands are easily accessible and manageable, with permission levels assignable on a user/role basis, as well as command category enabling/disabling at will. <br /><br />
+									Sporting features from every category, Miza is capable of suiting just about anyone's needs, from standard text commands, game features, moderating features, image features, roleplay features, and more.<br /><br />Remember, you can disable anything you please, so you can have Miza suit any one of them if that's what you want!
 								</p>
 							</div>
 						</div>
@@ -271,7 +269,7 @@ Above all else, Miza aims to provide users with a smooth, reliable and unique Di
 							</div>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
 								<h2 className={styles.coolHeadingBro}>Maintained</h2>
-								<p>Miza is constantly getting updated by <a href="https://github.com/thomas-xin">Thomas Xin,</a> with a crew at hand for any questions, feature requests or bug reports you may have.<br />
+								<p>Miza is constantly getting updated by <a href="https://github.com/thomas-xin">Thomas Xin,</a> with a crew at hand for any questions, feature requests or bug reports you may have.<br /><br />
 								Find a bug? Let us know and it'll usually be fixed within a day or few!
 								</p>
 							</div>
