@@ -39,14 +39,14 @@ function MizaApp() {
 				).replaceAll('/', '-').split('-').slice(0, 2).join('-')
 			)
 			prevLoc.current = location.pathname;
-		}, 300)
+		}, 150)
 	}, [location.pathname])
 	return (
 		<TransitionGroup>
 			<CSSTransition
 				key={location.key}
 				classNames="navigation"
-				timeout={600}
+				timeout={300}
 			>
 				{() => {
 					return (
@@ -80,9 +80,9 @@ function MizaApp() {
 							</Switch>
 							<footer>
 								<div>
-									miza.web 2
+									<a href="https://github.com/hucario/mizaweb2">miza.web 2</a>
 									<span className="sep" />
-									made with ♥ and 🍝
+									made with ♥ and <a href="https://github.com/smudgedpasta">🍝</a>
 									<span className="sep" />
 									by <a href="https://github.com/hucario">hucario</a>
 								</div>

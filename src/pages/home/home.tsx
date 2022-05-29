@@ -46,15 +46,18 @@ function Orbitals() {
 	return (<div className={styles.orbitals}>
 		{range(5).map(e => {
 			return (
-				<img
-					key={e}
-					className={styles.orbital}
-					style={{
-						animationDelay: -e*4 + 's'
-					}}
-					alt='Orbital'
-					src='/upside_down.svg'
-				/>
+				<a href="/miscellaneous">
+					<img
+						key={e}
+						className={styles.orbital}
+						style={{
+							filter: "hue-rotate(" + e*72 + "deg)",
+							animationDelay: -e*4 + 's'
+						}}
+						alt='Orbital'
+						src='/upside_down.svg'
+					/>
+				</a>
 			)
 		})}
 	</div>)
@@ -63,15 +66,18 @@ function Orbi2() {
 	return (<div className={[styles.orbitals, styles.orbs2].join(' ')}>
 		{range(5).map(e => {
 			return (
-				<img
-					key={e}
-					className={styles.orbital}
-					style={{
-						animationDelay: -e*4 + 's'
-					}}
-					alt='Orbital'
-					src='/star.svg'
-				/>
+				<a href="/miscellaneous">
+					<img
+						key={e}
+						className={styles.orbital}
+						style={{
+							filter: "hue-rotate(" + e*72 + "deg)",
+							animationDelay: -e*4 + 's'
+						}}
+						alt='Orbital'
+						src='/star.svg'
+					/>
+				</a>
 			)
 		})}
 	</div>)
@@ -84,8 +90,8 @@ export default function HomePage() {
 		stop
 	} = useTicker({
 		start: 0,
-		end: 350,
-		duration: 750,
+		end: 88,
+		duration: 188,
 		started: false
 	})
 	let width = (curr > 0 ? 1 : 0);
@@ -114,11 +120,13 @@ export default function HomePage() {
 							sticky
 						>
 							<div className={styles.left}>
-								<img
-									src="/logo512.png"
-									alt="Miza's avatar"
-									className={[styles.mizaImg, styles.slider].join(' ')}
-								/>
+								<a href="https://discord.com/oauth2/authorize?permissions=8&client_id=668999031359537205&scope=bot+applications.commands">
+									<img
+										src="/logo512.png"
+										alt="Miza's avatar"
+										className={[styles.mizaImg, styles.slider].join(' ')}
+									/>
+								</a>
 							</div>
 						</IsVisible>
 						<div className={styles.right}>
@@ -154,7 +162,7 @@ export default function HomePage() {
 						<div className={styles.holder}>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
 								<h2 className={styles.coolHeadingBro}>Built for speed</h2>
-								<p>Built on Python, Miza is a multipurpose Discord bot, fashioned after the character "Misery" from the platformer game Cave Story.<br /><br />She quickly branched out into all the areas you'd desire in a server, with careful attention to efficiency, performance, quality, and reliability. All commands are quick and responsive...except for downloading hundreds of items at a time. That may take you a while!<br /><br />Above all else, Miza aims to provide users with a smooth, reliable and unique Discord experience, but the general premise for Miza is: "If other bots can do it, Miza should be able to do it too!" 🙃</p>
+								<p>Built on Python, Miza is a multipurpose Discord bot, fashioned after the character "Misery" from the platformer game Cave Story.<br /><br />She quickly branched out into all the areas you'd desire in a server, with careful attention to efficiency, performance, quality, and reliability. All commands are quick and responsive... except for downloading hundreds of items at a time. That may take you a while!<br /><br />Above all else, Miza aims to provide users with a smooth, reliable and unique Discord experience, but the general premise for Miza is: "If other bots can do it, Miza should be able to do it too!" 🙃</p>
 							</div>
 						</div>
 					</IsVisible>
@@ -222,8 +230,7 @@ export default function HomePage() {
 						<div className={styles.holder}>
 							<div className={[styles.coolTextBro, styles.slider].join(' ')}>
 								<h2 className={styles.coolHeadingBro}>Versatile</h2>
-								<p>
-								All of Miza's commands are easily accessible and manageable, with permission levels assignable on a user/role basis, as well as command category enabling/disabling at will.<br /><br />The prefix is customizable, the command parser is intelligent, with the ability to recognize text in unicode fonts, the ability to parse and solve mathematical formulae for numerical inputs, in addition to fuzzy searching usernames to make your life a whole lot easier if you're try'na find someone quickly!<br /><br />Sporting features from every category, Miza is capable of suiting just about anyone's needs, from standard text commands, game features, moderating features, image features, roleplay features, and more! Remember, you can disable anything you please, so you can have Miza suit any one of them if that's what you want!
+								<p>All of Miza's commands are easily accessible and manageable, with permission levels assignable on a user/role basis, as well as command category enabling/disabling at will.<br /><br />The prefix is customizable, the command parser is intelligent, with the ability to recognize text in unicode fonts, the ability to parse and solve mathematical formulae for numerical inputs, in addition to fuzzy searching usernames to make your life a whole lot easier if you're try'na find someone quickly!<br /><br />Sporting features from every category, Miza is capable of suiting just about anyone's needs, from standard text commands, game features, moderating features, image features, roleplay features, and more! Remember, you can disable anything you please, so you can have Miza suit any one of them if that's what you want!
 								</p>
 							</div>
 						</div>
@@ -304,7 +311,7 @@ export default function HomePage() {
 							<div className={[styles.coolTextBro, styles.slider, 'hideext'].join(' ')}>
 								<h2 className={styles.center}>Get Miza now</h2>
 								<div className={styles.ctas}>
-									<a href="https://discordapp.com/oauth2/authorize?permissions=8&client_id=668999031359537205&scope=bot%20applications.commands" >
+									<a href="https://discord.com/oauth2/authorize?permissions=8&client_id=668999031359537205&scope=bot+applications.commands" >
 										Invite
 									</a>
 									<a href="https://discord.com/invite/cbKQKAr">

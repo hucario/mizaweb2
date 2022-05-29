@@ -10,7 +10,7 @@ ReactDOM.render(
 
 (async () => {
 	let loader = document.getElementById('loader');
-	const SIM_LOAD_TIME = 2000;
+	const SIM_LOAD_TIME = 500;
 	if (loader) {
 		// @ts-expect-error TS can't find this - it's set in the HTML file
 		let LOAD_START_TIME = (window.LOAD_START_TIME ?? Date.now()) as number;
@@ -32,7 +32,7 @@ ReactDOM.render(
 				return;
 			}
 			loader.style.display = 'none'; // for some reason, sometimes transitionend doesn't work
-		}, 1000)
+		}, 250)
 		loader.style.opacity = '0';
 	}
 })()

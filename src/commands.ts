@@ -36,7 +36,7 @@ const commands: commandsRefKinda = {
 	}
 }
 
-fetch('http://i.mizabot.xyz/static/HELP.json').then(e => e.json()).then((e: helpJSONStruc) => {
+fetch('https://mizabot.xyz/static/HELP.json').then(e => e.json()).then((e: helpJSONStruc) => {
 	commands.set(e);
 })
 
