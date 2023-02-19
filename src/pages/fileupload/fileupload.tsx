@@ -272,7 +272,7 @@ export default function FileDetails() {
 				}
 				{details.mimetype.includes('video') &&
 					<div className={sty.videogroup}>
-						<video controls autoPlay loop className={sty.previewVideo}>
+						<video controls loop className={sty.previewVideo}>
 							<source src={details.url}
 									type={details.mimetype} />
 							Sorry, your browser doesn't support this type of file.
@@ -281,7 +281,7 @@ export default function FileDetails() {
 				}
 				{details.mimetype.includes('audio') &&
 					<div className={sty.audiogroup}>
-						<audio controls autoPlay loop className={sty.previewAudio}>
+						<audio controls loop className={sty.previewAudio}>
 							<source src={details.url}
 									type={details.mimetype} />
 							Sorry, your browser doesn't support this type of file.
