@@ -11,6 +11,7 @@ import {
 import { ThemeProvider } from "styled-components"
 import { DEFAULT_THEME } from './components/DiscordMessage/markdown/styles/defaultTheme'
 import HomePage from './pages/home/'
+import ChatPage from './pages/chat/'
 import AtlasPage from './pages/atlas/'
 import TesterPage from './pages/tester/'
 import FileUploadPage from './pages/fileupload/'
@@ -60,11 +61,14 @@ function MizaApp() {
 							<base target="_blank" />
 							<nav>
 								<NavLink exact activeClassName="activeNav" className="hideext" to="/">Home</NavLink>
+								<NavLink activeClassName="activeNav" className="hideext" to="/chat">Chat</NavLink>
 								<NavLink activeClassName="activeNav" className="hideext" to="/atlas">Atlas</NavLink>
 								<NavLink activeClassName="activeNav" className="hideext" to="/tester">Tester</NavLink>
 								<NavLink activeClassName="activeNav" className="hideext" to="/files">Files</NavLink>
 								<a href="https://www.github.com/thomas-xin/miza">Code</a>
 								<a href="https://discord.gg/cbKQKAr">Support</a>
+								<a href="https://ko-fi.com/mizabot">Premium</a>
+								<a href="https://github.com/thomas-xin/Miza/wiki/Terms-of-Service">ToS</a>
 							</nav>
 							<Switch location={location}>
 								<Route exact path="/" component={HomePage} />
@@ -72,6 +76,7 @@ function MizaApp() {
 								<Route path="/file/:id" component={FileDetailsPage} />
 								<Route path="/createredirect" component={CRedirPage} />
 								<Redirect from="/mizatlas" to="/atlas" /> {/* old url */}
+								<Route path="/chat" component={ChatPage} />
 								<Route path="/atlas/:command?" component={AtlasPage} />
 								<Route path="/tester" component={TesterPage} />
 								<Route path="/time" component={TimePage} />

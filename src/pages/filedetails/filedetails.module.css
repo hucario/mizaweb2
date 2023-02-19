@@ -49,8 +49,8 @@
 	white-space: normal;
 }
 .previewImg {
-	width: 20vw;
-	aspect-ratio: 1/1;
+	max-width: 100%;
+	max-height: 50%;
 	object-fit: cover;
 	object-position: center;
 	border-radius: 4px;
@@ -58,21 +58,32 @@
 }
 
 .previewVideo {
-	width: 30vw;
-	max-height: 30vw;
+	max-width: 100%;
+	max-height: 50%;
 	object-fit: cover;
 	object-position: center;
 	border-radius: 4px;
 	box-shadow: 0 1px 4px 0 #ffffff73;
 }
 
+.previewAudio {
+	width: 90vw;
+	object-position: center;
+	border-radius: 4px;
+	box-shadow: 0 1px 4px 0 #ffffff73;
+}
 
 .videogroup {
-	padding-right: 10vw;
+	text-align: center;
+	margin: 0.5em;
+}
+
+.audiogroup {
+	text-align: center;
 	margin: 0.5em;
 }
 
 .imggroup {
-	padding-right: 20%;
+	text-align: center;
 	margin: 0.5em;
 }

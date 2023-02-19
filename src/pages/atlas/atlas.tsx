@@ -117,7 +117,7 @@ export default function AtlasPage(props: {
 	const doCommand = (force?: string) => {
 		let cI = force ?? commandInput;
 		sL(true);
-		fetch('http://i.mizabot.xyz/command/' + encodeURIComponent(cI), {
+		fetch('https://mizabot.xyz/command/' + encodeURIComponent(cI), {
 			credentials: 'omit',
 			mode: window.location.hostname.includes('mizabot.xyz') ? 'same-origin' : 'cors'
 		}).then(async (e) => {
@@ -256,6 +256,12 @@ export default function AtlasPage(props: {
 						<p className={styles.usage}>
 							Usage: ~{currCmd.title.toLowerCase()} {currCmd.usage}
 						</p>
+						<p className={styles.aliases}>
+							Examples:
+						</p>
+						<p className={styles.usage}>
+							~{(currCmd.example ? currCmd.example.filter(Boolean) : []).join('\n~')}
+						</p>
 						<div className={styles.outputwrap}>
 						<div
 							className={[
@@ -264,7 +270,7 @@ export default function AtlasPage(props: {
 						>
 							<input
 								className={styles.inp}
-								value={commandInput}
+								value={commandInput + currCmd.example?.[0]}
 								onInput={(e: React.FormEvent<HTMLInputElement>) => {
 									sCI(
 										e.currentTarget.value.startsWith('~' + currCmd.title.toLowerCase()) ?

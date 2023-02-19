@@ -4,6 +4,7 @@ export type mizaCommand = {
 	aliases: string[],
 	description: string,
 	usage: string,
+	example: string[],
 	level: numberStoredAsString,
 	rate_limit: numberStoredAsString,
 	timeout: numberStoredAsString

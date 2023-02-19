@@ -1,5 +1,5 @@
 import React, {  useEffect, useRef, useState } from "react";
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { CodeBlock } from "../../components/DiscordMessage/markdown/code/CodeBlock";
 
 import sty from './fileupload.module.css'
@@ -41,6 +41,7 @@ export default function FileDetails() {
 	const [errored, sE] = useState(false);
 	const fileRef = useRef<File | undefined>(undefined);
 	const fiRef = useRef<HTMLInputElement | null>(null);
+	const history = useHistory();
 
 	const upload = () => {
 		let file = fileRef.current;
@@ -61,8 +62,8 @@ export default function FileDetails() {
 		xhr.onerror = () => {
 			sE(true);
 		}
-		xhr.open('POST', 'http://i.mizabot.xyz/upload_chunk', true);
-		
+		xhr.open('POST', 'https://mizabot.xyz/upload_chunk', true);
+
 		xhr.setRequestHeader("X-File-Name", file.name);             // custom header with filename and full size
 		xhr.setRequestHeader("X-File-Size", file.size + '');
 		xhr.send(file);
@@ -76,18 +77,32 @@ export default function FileDetails() {
 	
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === XMLHttpRequest.DONE) {
-				sR(xhr.responseText.replace('/p/', '/file/'))
+				history.push(xhr.responseText.replace('/p/', '/file/'));
+				// sR(xhr.responseText.replace('/p/', '/file/'))
+				window.location.reload();
 			}
 		}
 		xhr.onerror = () => {
 			sE(true);
 		}
-	
+
 		fd.append("name", file.name);
 		fd.append("index", '0');
-	
-		xhr.open("POST", "http://i.mizabot.xyz/merge", true);
+
+		if (document.URL.split("?", 2)[1]) {
+			xhr.open("PATCH", "https://mizabot.xyz/edit/" + document.URL.split("/files/", 2)[1], true);
+		}
+		else {
+			xhr.open("POST", "https://mizabot.xyz/merge", true);
+		}
 		xhr.send(fd);
+	}
+	const deleteFile = () => {
+		if (!window.confirm("This action will irreversibly delete the file, and all links will become obsolete.")) {
+			return;
+		}
+		history.push('/delete/' + document.URL.split("/files/", 2)[1]);
+		window.location.reload();
 	}
 	if (redirecteyboi) {
 		return (
@@ -98,7 +113,6 @@ export default function FileDetails() {
 	let radius = 50;
 	let circumference = radius * 2 * Math.PI;
 
-	
 	if (loading) {
 		return (
 			<div className={sty.vcenter}>
@@ -182,7 +196,20 @@ export default function FileDetails() {
 			>
 				<div className={sty.hcenter}>
 					<div className={sty.fileInputHolder}>
-						<h1 className={sty.up}>Upload file or <Link to="/createredirect/">create redirect</Link></h1>
+						{document.URL.split("?", 2)[1]?.split("=", 1)[0] == "key" ?
+							<>
+								<h2>
+									*You are about to edit the file {document.URL.split('/files/', 2)[1].split('?', 1)[0]}. This edit will be immediate and permanent.
+								</h2>
+								<h1 className={sty.up}>
+									Upload file, <Link to={'/createredirect/' + document.URL.split('/files/', 2)[1]}>create redirect</Link>
+									, or <a style={{textDecoration:'underline'}} onClick={() => {console.log('bye');deleteFile()}}>delete</a>
+								</h1>
+							</> :
+							<h1 className={sty.up}>
+								Upload file or <Link to="/createredirect/">create redirect</Link>
+							</h1>
+						}
 						<label className={sty.file}>
 							<input
 								type="file"
@@ -245,11 +272,20 @@ export default function FileDetails() {
 				}
 				{details.mimetype.includes('video') &&
 					<div className={sty.videogroup}>
-						<video controls autoPlay muted loop className={sty.previewVideo}>
+						<video controls autoPlay loop className={sty.previewVideo}>
 							<source src={details.url}
 									type={details.mimetype} />
 							Sorry, your browser doesn't support this type of file.
 						</video>
+					</div>
+				}
+				{details.mimetype.includes('audio') &&
+					<div className={sty.audiogroup}>
+						<audio controls autoPlay loop className={sty.previewAudio}>
+							<source src={details.url}
+									type={details.mimetype} />
+							Sorry, your browser doesn't support this type of file.
+						</audio>
 					</div>
 				}
 				{previewTxt &&
@@ -270,7 +306,7 @@ export default function FileDetails() {
 						}}
 						className={sty.uploadButton}
 					>
-						upload
+						Upload
 					</button>
 				</div>
 			</div>

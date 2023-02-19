@@ -96,7 +96,7 @@ export default function HomePage() {
 	})
 	let width = (curr > 0 ? 1 : 0);
 	useEffect(() => {
-		document.title = "Miza: a multipurpose Discord bot"
+		document.title = "Miza: your local loyal multipurpose Discord bot"
 	})
 	return (
 	<div>
@@ -131,7 +131,7 @@ export default function HomePage() {
 						</IsVisible>
 						<div className={styles.right}>
 							<h1 className={styles.name}>Miza</h1>
-							<p className={styles.exp}>is a <MultiPorpoise /> discord bot</p>
+							<p className={styles.exp}>is your local loyal <MultiPorpoise /> discord bot</p>
 						</div>
 					</div>
 				</div>
@@ -308,15 +308,25 @@ export default function HomePage() {
 						sticky
 					>
 						<div className={styles.holder}>
-							<div className={[styles.coolTextBro, styles.slider, 'hideext'].join(' ')}>
+							<div className={[styles.coolTextBro, styles.slider, 'hideext'].join(' ')} style={{textAlign:"center"}}>
 								<h2 className={styles.center}>Get Miza now</h2>
-								<div className={styles.ctas}>
-									<a href="https://discord.com/oauth2/authorize?permissions=8&client_id=668999031359537205&scope=bot+applications.commands" >
-										Invite
-									</a>
-									<a href="https://discord.com/invite/cbKQKAr">
-										Support server
-									</a>
+								<div style={{display:"inline-block",margin:"0 auto"}}>
+									<div className={styles.ctas}>
+										<a href="https://discord.com/oauth2/authorize?permissions=8&client_id=668999031359537205&scope=bot+applications.commands" >
+											🧙‍♀️ Invite
+										</a>
+										<a href="https://discord.com/invite/cbKQKAr">
+											🧑‍🔧 Support server
+										</a>
+									</div>
+								</div>
+								<div className={styles.center}>Support Miza</div>
+								<div style={{display:"inline-block",margin:"0 auto"}}>
+									<div className={styles.ctas}>
+										<a href="https://ko-fi.com/mizabot">
+											☕ Donations and Subscriptions
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>

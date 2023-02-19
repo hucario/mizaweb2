@@ -35,7 +35,7 @@ export default function FileDetails(props: {
 
 	useEffect(() => {
 		(async() => {
-			let res = await fetch('http://i.mizabot.xyz/fileinfo/' + props.match.params.id)
+			let res = await fetch('https://mizabot.xyz/fileinfo/' + props.match.params.id)
 			let data = await res.json();
 			data.type = 'FILE';
 
@@ -129,6 +129,9 @@ export default function FileDetails(props: {
 					<h1 className={sty.filename}>
 						{details.filename}
 					</h1>
+					<h2 className={sty.size}>
+						{document.URL.split('?', 1)[0]}
+					</h2>
 					<h4 className={sty.size}>
 						{formatBytes(details.size)}
 					</h4>
@@ -136,7 +139,7 @@ export default function FileDetails(props: {
 						{details.mimetype}
 					</h5>
 				</div>
-				{details.mimetype.includes('image') && details.size < 10485760 /* 10mb */ &&
+				{details.mimetype.includes('image') && details.size < 268435456 /* 10mb */ &&
 					<div className={sty.imggroup}>
 						<img src={details.raw} className={sty.previewImg} alt={details.filename} />
 						<h6 className={sty.id}>
@@ -146,11 +149,23 @@ export default function FileDetails(props: {
 				}
 				{details.mimetype.includes('video') &&
 					<div className={sty.videogroup}>
-						<video controls autoPlay muted loop className={sty.previewVideo}>
-							<source src={details.raw}
+						<video controls autoPlay loop className={sty.previewVideo}>
+							<source src={details.dl}
 									type={details.mimetype} />
 							Sorry, your browser doesn't support this type of file.
 						</video>
+						<h6 className={sty.id}>
+							[[ {details.id} ]]
+						</h6>
+					</div>
+				}
+				{details.mimetype.includes('audio') &&
+					<div className={sty.audiogroup}>
+						<audio controls autoPlay loop className={sty.previewAudio}>
+							<source src={details.dl}
+									type={details.mimetype} />
+							Sorry, your browser doesn't support this type of file.
+						</audio>
 						<h6 className={sty.id}>
 							[[ {details.id} ]]
 						</h6>
@@ -168,12 +183,26 @@ export default function FileDetails(props: {
 				}
 				<ul className={sty.group}>
 					<li>
-						<a href={details.dl} download className={sty.link + ' hideext'}>download</a>
+						<a href={details.dl} download className={sty.link + ' hideext'}>Download</a>
 					</li>
-					{(details.mimetype.includes('image') || details.mimetype.includes('text') || details.mimetype.includes('video')) && 
+					<li>
+						<a href={details.raw} className={sty.link + ' hideext'}>View</a>
+					</li>
+					{document.URL.split('?', 2)[1] &&
 						<li>
-							<a href={details.raw} className={sty.link + ' hideext'}>view raw</a>
+							<a href={'/files/' + details.raw.split('/f/', 2)[1] + "?" + document.URL.split('?', 2)[1]} className={sty.link + ' hideext'}>Edit</a>
 						</li>
+						// <>
+							// <li>
+								// <form id="editor" action={'/edit/' + details.raw.split('/f/', 2)[1] + "?" + document.URL.split('?', 2)[1]}>
+									// <label htmlFor="uploader" style={{textDecoration:'underline'}}>Edit</label>
+									// <input id="uploader" type="file" name="file" onChange={e => e!.target!.form!.submit()} hidden></input>
+								// </form>
+							// </li>
+							// <li>
+								// <a href={'/delete/' + details.raw.split('/f/', 2)[1] + "?" + document.URL.split('?', 2)[1]} className={sty.link + ' hideext'}>Delete</a>
+							// </li>
+						// </>
 					}
 				</ul>
 			</div>

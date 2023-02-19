@@ -66,7 +66,7 @@ export default function MPInsightsPage() {
 	}, [])
 	useEffect(() => {
 		(async() => {
-			let a = await fetch("http://i.mizabot.xyz/mpinsights", {
+			let a = await fetch("https://mizabot.xyz/api_mpinsights", {
 				"headers": {
 					"accept": "application/json",
 				},

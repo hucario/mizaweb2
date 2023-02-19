@@ -20,7 +20,7 @@ export default function RedirPage(props: RouteChildrenProps) {
 		d.set('url', inpVal);
 		d.set('code', '308')
 		d.set('ftype', '1')
-		let res = await fetch('http://i.mizabot.xyz/forward', {
+		let res = await fetch('https://mizabot.xyz/forward', {
 			method: 'POST',
 			mode: window.location.hostname.includes('mizabot.xyz') ? 'same-origin' : 'cors',
 			body: d

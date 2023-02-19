@@ -3,7 +3,7 @@ import DiscordMessage from '../../components/DiscordMessage/'
 import { RouteChildrenProps} from 'react-router-dom'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { MessageData } from '../../components/DiscordMessage/DiscordMessage'
-import styles from './tester.module.css'
+import styles from './chat.module.css'
 import commandsByCategory from '../../commands'
 
 let exampleCommandThingy = {
@@ -14,19 +14,19 @@ let exampleCommandThingy = {
 		},
 		"color": 6899575, 
 		"type": "rich", 
-		"description": "**```\nEnter a command to start!```**"
+		"description": "**```\nAsk or talk about anything!```**"
 	}
 }
-export default function TesterPage(props: RouteChildrenProps) {
+export default function ChatPage(props: RouteChildrenProps) {
 	const [search, sS] = useState(props.location.search);
-	const [commandInput, sCI] = useState('~');
+	const [commandInput, sCI] = useState('Can I please have a hug?');
 	const [hasDoneInitial, sHDI] = useState(false);
 	const [cData, sCD] = useState<MessageData>(exampleCommandThingy);
 	const [procError, sPE] = useState<null | string>(null);
 	const [storedResultsFor, sSRF] = useState<null | string>(null);
 	const [loading, sL] = useState(false);
 	useEffect(() => {
-		document.title = "Miza: Tester"
+		document.title = "Miza: Chat"
 		return () => {
 			document.title = "Miza";
 		}
@@ -42,10 +42,10 @@ export default function TesterPage(props: RouteChildrenProps) {
 	sParams.get('cmd') && sParams.set('cmd', decodeURIComponent(unescape(sParams.get('cmd'))));
 
 	const commandNames = useRef<string[]>([]);
-	const doCommand = (force?: string) => {
+	const doChat = (force?: string) => {
 		let cI = force ?? commandInput;
 		sL(true);
-		fetch('https://mizabot.xyz/command/' + encodeURIComponent(cI), {
+		fetch('https://mizabot.xyz/command/ask%20' + encodeURIComponent(cI), {
 			credentials: 'omit',
 			mode: window.location.hostname.includes('mizabot.xyz') ? 'same-origin' : 'cors'
 		}).then(async (e) => {
@@ -71,38 +71,38 @@ export default function TesterPage(props: RouteChildrenProps) {
 		if (fD) {
 			sCD(JSON.parse(decodeURIComponent(escape(atob(fD)))));
 			if (cmd) {
-				sCI('~' + decodeURIComponent(unescape(cmd)));
+				sCI(decodeURIComponent(unescape(cmd)));
 				// DON'T run the command again if there's data
 			}
 		} else if (cmd) {
-			sCI('~' + decodeURIComponent(unescape(sParams.get('cmd'))));
-			doCommand('~' + decodeURIComponent(unescape(sParams.get('cmd'))))
+			sCI(decodeURIComponent(unescape(sParams.get('cmd'))));
+			doChat(decodeURIComponent(unescape(sParams.get('cmd'))))
 		}
 		sHDI(true);
 	}
 	
-	const doStuff = () => {
-		let tempC: string[] = [];
-		if (!commandsByCategory.current) { 
-			return;
-		}
-		for (let cat in commandsByCategory.current) {
-			for (let command in commandsByCategory.current[cat]) {
-			tempC.push(
-					...commandsByCategory.current[cat][command].aliases.map(e => e.toLowerCase()),
-					command.toLowerCase()
-				)
-			}
-		}
-		commandNames.current = tempC;
-	}
-	if (!commandsByCategory.effects.includes(doStuff)) {
-		commandsByCategory.setEffectCB(doStuff);
-	}
+	// const doStuff = () => {
+		// let tempC: string[] = [];
+		// if (!commandsByCategory.current) { 
+			// return;
+		// }
+		// for (let cat in commandsByCategory.current) {
+			// for (let command in commandsByCategory.current[cat]) {
+			// tempC.push(
+					// ...commandsByCategory.current[cat][command].aliases.map(e => e.toLowerCase()),
+					// command.toLowerCase()
+				// )
+			// }
+		// }
+		// commandNames.current = tempC;
+	// }
+	// if (!commandsByCategory.effects.includes(doStuff)) {
+		// commandsByCategory.setEffectCB(doStuff);
+	// }
 
-	useEffect(() => {
-		doStuff();
-	}, [commandNames])
+	// useEffect(() => {
+		// doStuff();
+	// }, [commandNames])
 
 	let suggestedCommand = commandNames.current.filter(e => e.startsWith(commandInput.substring(1))).sort()?.[0];
 
@@ -126,9 +126,7 @@ export default function TesterPage(props: RouteChildrenProps) {
 					disabled={isPermaRes}
 					onInput={(e: FormEvent<HTMLInputElement>) => {
 						sCI(
-							e.currentTarget.value.startsWith('~') ?
-								e.currentTarget.value :
-								'~' + e.currentTarget.value
+							e.currentTarget.value
 						);
 					}}
 					onKeyPress={(e) => {
@@ -136,17 +134,17 @@ export default function TesterPage(props: RouteChildrenProps) {
 							return;
 						}
 						e.preventDefault();
-						if (suggestedCommand && commandInput !== '~' + suggestedCommand) {
-							sCI('~' + suggestedCommand);
-							return;
-						}
-						doCommand();
+						// if (suggestedCommand && commandInput !== suggestedCommand) {
+							// sCI(suggestedCommand);
+							// return;
+						// }
+						doChat();
 					}}
 				/>
 				<span
 					className={styles.suggest}
 				>
-					{commandInput.length !== 0 && suggestedCommand && '~' + suggestedCommand}
+					{commandInput.length !== 0 && suggestedCommand}
 				</span>
 			</div>
 			<div className={[
@@ -161,14 +159,14 @@ export default function TesterPage(props: RouteChildrenProps) {
 							undefined),
 						styles.permCmd
 					].join(' ')}
-					href={`./tester?cmd=${
-						commandInput.substring(1)
+					href={`./chat?cmd=${
+						commandInput
 					}`}
 					onClick={(e) => {
 						e.preventDefault();
-						sS(`?cmd=${commandInput.substring(1)}`)
-						window.history.replaceState(null, "Miza", `./tester?cmd=${
-							commandInput.substring(1)
+						sS(`?cmd=${commandInput}`)
+						window.history.replaceState(null, "Miza", `./chat?cmd=${
+							commandInput
 						}`);
 					}}
 					target="_self"
@@ -183,16 +181,16 @@ export default function TesterPage(props: RouteChildrenProps) {
 							undefined),
 						styles.permRes
 					].join(' ')}
-					href={`./tester?cmd=${commandInput.substring(1)}&fdata=${btD}`}
+					href={`./chat?cmd=${commandInput}&fdata=${btD}`}
 					onClick={(e) => {
 						e.preventDefault();
-						window.history.replaceState(null, "Miza", `./tester?cmd=${
-							commandInput.substring(1)
+						window.history.replaceState(null, "Miza", `./chat?cmd=${
+							commandInput
 						}&fdata=${
 							btD
 						}`)
 						sS(`?cmd=${
-							commandInput.substring(1)
+							commandInput
 						}&fdata=${
 							btD
 						}`)
@@ -235,9 +233,9 @@ export default function TesterPage(props: RouteChildrenProps) {
 						className={styles.runYourself}
 						onClick={() => {
 							sS(``)
-							window.history.replaceState(null, "Miza", `./tester`);
-							sCI('~' + sParams.get('cmd'));
-							doCommand('~' + sParams.get('cmd'))
+							window.history.replaceState(null, "Miza", `./chat`);
+							sCI(sParams.get('cmd'));
+							doChat(sParams.get('cmd'))
 						}}
 					>
 						run yourself
