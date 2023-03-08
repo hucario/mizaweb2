@@ -42,7 +42,52 @@ export default function FileDetails() {
 	const fileRef = useRef<File | undefined>(undefined);
 	const fiRef = useRef<HTMLInputElement | null>(null);
 	const history = useHistory();
+	var progs = [0];
+	var progf = [false];
 
+	const upload_chunk = (file: File, fname: string, i: number, start: number, end: number) => {
+		let blob = file.slice(start, end);
+		let xhr = new XMLHttpRequest();
+		let size = end - start;
+		xhr.upload.onprogress = ((e) => {
+			progs[i] = e.loaded;
+			let loaded = 0;
+			for (let n of progs) {
+				loaded += n;
+			}
+			setProgress(loaded / file.size * 100);
+		});
+		xhr.onreadystatechange = function() {
+			if(this.readyState === 4) {
+				progs[i] = size;
+				progf[i] = true;
+				let finished = true;
+				for (let n of progf) {
+					if (!n) {
+						finished = false;
+						break;
+					}
+				}
+				if (finished) {
+					merge(file, progs.length);
+				}
+			}
+		};
+		xhr.onerror = () => {
+			progs[i] = 0;
+			progf[i] = false;
+			console.log("Retrying chunk " + i);
+			upload_chunk(file, fname, i, start, end);
+			// sE(true);
+		}
+		xhr.open('POST', 'https://mizabot.xyz/upload_chunk', true);
+
+		xhr.setRequestHeader("X-File-Name", fname);             // custom header with filename and full size
+		xhr.setRequestHeader("X-File-Size", size + '');
+		xhr.setRequestHeader("X-Index", i + '');
+		xhr.send(blob);
+		return xhr;
+	}
 	const upload = () => {
 		let file = fileRef.current;
 		if (!file || typeof file === 'undefined') {
@@ -50,31 +95,39 @@ export default function FileDetails() {
 		}
 		sL(true);
 		sE(false);
-		let xhr = new XMLHttpRequest();
-		xhr.upload.onprogress = function(e) {
-			setProgress((e.loaded / e.total) * 100);
-		};
-		xhr.onreadystatechange = function() {
-			if(this.readyState === 4) {
-				merge(file);
+		const chunk = 83886080;
+		progs.length = 0;
+		progf.length = 0;
+		var fname = encodeURIComponent(file.name);
+		(function split_file(i) {
+			if (i >= 8 && progs[i - 8] < chunk) {
+				setTimeout(function() {
+					split_file(i);
+				}, 4000);
+				return;
 			}
-		};
-		xhr.onerror = () => {
-			sE(true);
-		}
-		xhr.open('POST', 'https://mizabot.xyz/upload_chunk', true);
-
-		xhr.setRequestHeader("X-File-Name", file.name);             // custom header with filename and full size
-		xhr.setRequestHeader("X-File-Size", file.size + '');
-		xhr.send(file);
+			let start = i * chunk;
+			let end = start + chunk;
+			if (end > file.size) end = file.size;
+			progs.push(0);
+			progf.push(false);
+			console.log("Sending chunk " + i);
+			upload_chunk(file, fname, i, start, end);
+			if (end < file.size) {
+				setTimeout(function() {
+					split_file(i + 1);
+				}, 250);
+			}
+		})(0);
 	}
-	const merge = (file?: File) => {
-		if (!file) {
-			return;
-		}
+	const merge = (file: File, index: number) => {
+		if (!file) return;
+		if (!progf.length) return;
+		progs.length = 0;
+		progf.length = 0;
 		let xhr = new XMLHttpRequest();
 		let fd = new FormData();
-	
+
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === XMLHttpRequest.DONE) {
 				history.push(xhr.responseText.replace('/p/', '/file/'));
@@ -87,7 +140,8 @@ export default function FileDetails() {
 		}
 
 		fd.append("name", file.name);
-		fd.append("index", '0');
+		fd.append("x-file-name", encodeURIComponent(file.name));
+		fd.append("index", index + '');
 
 		if (document.URL.split("?", 2)[1]) {
 			xhr.open("PATCH", "https://mizabot.xyz/edit/" + document.URL.split("/files/", 2)[1], true);
