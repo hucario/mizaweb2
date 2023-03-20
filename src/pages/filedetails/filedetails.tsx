@@ -107,7 +107,7 @@ export default function FileDetails(props: {
 				<div className={sty.hcenter}>
 					<div className={sty.group}>
 						<h1 className={sty.filename}>
-						<a target="_self" href={details.raw}>{details.raw}</a>
+						<a target="_self" href={details.raw}>{details.dl}</a>
 						</h1>
 						<h2 className={sty.mime} style={{
 							fontSize: '1.2rem'
