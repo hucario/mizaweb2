@@ -58,6 +58,7 @@ export default function RedirPage(props: RouteChildrenProps) {
 				<div className={styles.group} id="contains">
 					<input
 						className={styles.inp}
+						name="inputs"
 						placeholder={window.location.protocol + 
 							'//' + 
 							window.location.host + 
