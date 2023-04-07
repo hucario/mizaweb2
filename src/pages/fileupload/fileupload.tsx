@@ -44,6 +44,7 @@ export default function FileDetails() {
 	const history = useHistory();
 	var progs = [0];
 	var progf = [false];
+	const [launched, setL] = useState(false);
 
 	const upload_chunk = (file: File, fname: string, i: number, start: number, end: number) => {
 		let blob = file.slice(start, end);
@@ -58,7 +59,7 @@ export default function FileDetails() {
 			setProgress(loaded / file.size * 100);
 		});
 		xhr.onreadystatechange = function() {
-			if(this.readyState === 4) {
+			if(this.readyState === 4 && launched) {
 				progs[i] = size;
 				progf[i] = true;
 				let finished = true;
@@ -84,6 +85,7 @@ export default function FileDetails() {
 
 		xhr.setRequestHeader("X-File-Name", fname);             // custom header with filename and full size
 		xhr.setRequestHeader("X-File-Size", size + '');
+		xhr.setRequestHeader("X-Total", file.size + '');
 		xhr.setRequestHeader("X-Index", i + '');
 		xhr.send(blob);
 		return xhr;
@@ -95,6 +97,7 @@ export default function FileDetails() {
 		}
 		sL(true);
 		sE(false);
+		setL(false);
 		const chunk = 83886080;
 		progs.length = 0;
 		progf.length = 0;
@@ -118,6 +121,9 @@ export default function FileDetails() {
 					split_file(i + 1);
 				}, 250);
 			}
+			else {
+				setL(true);
+			}
 		})(0);
 	}
 	const merge = (file: File, index: number) => {
@@ -139,9 +145,10 @@ export default function FileDetails() {
 			sE(true);
 		}
 
-		fd.append("name", file.name);
-		fd.append("x-file-name", encodeURIComponent(file.name));
-		fd.append("index", index + '');
+		fd.append("Name", file.name);
+		fd.append("X-File-Name", encodeURIComponent(file.name));
+		fd.append("Total", file.size + '');
+		fd.append("Index", index + '');
 
 		if (document.URL.split("?", 2)[1]) {
 			xhr.open("PATCH", "https://mizabot.xyz/edit/" + document.URL.split("/files/", 2)[1], true);
