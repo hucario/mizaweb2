@@ -44,7 +44,7 @@ export default function FileDetails() {
 	const history = useHistory();
 	var progs = [0];
 	var progf = [false];
-	const [launched, setL] = useState(false);
+	var launched = false;
 
 	const upload_chunk = (file: File, fname: string, i: number, start: number, end: number) => {
 		let blob = file.slice(start, end);
@@ -59,18 +59,21 @@ export default function FileDetails() {
 			setProgress(loaded / file.size * 100);
 		});
 		xhr.onreadystatechange = function() {
-			if(this.readyState === 4 && launched) {
+			if(this.readyState === 4) {
 				progs[i] = size;
 				progf[i] = true;
-				let finished = true;
-				for (let n of progf) {
-					if (!n) {
-						finished = false;
-						break;
+				// console.log(progf);
+				if (launched) {
+					let finished = true;
+					for (let n of progf) {
+						if (!n) {
+							finished = false;
+							break;
+						}
 					}
-				}
-				if (finished) {
-					merge(file, progs.length);
+					if (finished) {
+						merge(file, progs.length);
+					}
 				}
 			}
 		};
@@ -97,7 +100,7 @@ export default function FileDetails() {
 		}
 		sL(true);
 		sE(false);
-		setL(false);
+		launched = false;
 		const chunk = 83886080;
 		progs.length = 0;
 		progf.length = 0;
@@ -122,7 +125,8 @@ export default function FileDetails() {
 				}, 250);
 			}
 			else {
-				setL(true);
+				launched = true;
+				console.log("Merge enabled");
 			}
 		})(0);
 	}
@@ -147,7 +151,7 @@ export default function FileDetails() {
 
 		fd.append("Name", file.name);
 		fd.append("X-File-Name", encodeURIComponent(file.name));
-		fd.append("Total", file.size + '');
+		fd.append("X-Total", file.size + '');
 		fd.append("Index", index + '');
 
 		if (document.URL.split("?", 2)[1]) {
